@@ -58,7 +58,7 @@ button svg{display:block}
 .sk{min-height:50px;font-size:13px;line-height:1.15;padding:4px;border-radius:6px}
 .sk .cd{position:absolute;inset:0;background:rgba(0,0,0,.65);color:#fff;display:none;align-items:center;justify-content:center;font-size:22px}
 #sndb{position:absolute;top:8px;left:8px;width:34px;height:34px;border-radius:50%;padding:0!important;min-height:0!important;font-size:17px;display:flex;align-items:center;justify-content:center;background:rgba(20,16,12,.7);border:2px solid #8a7a52;color:#e8d9a8;z-index:6;opacity:.9}.ngb{background:transparent!important;border:none!important;color:#8a7a52!important;font-size:11px!important;margin:0!important;box-shadow:none!important;text-decoration:underline}
-#qsb,#tlb,#sacb,#dgnb{position:absolute;right:8px;width:38px;height:38px;border-radius:50%;padding:0!important;min-height:0!important;font-size:18px;display:flex;align-items:center;justify-content:center;background:rgba(20,16,12,.72);border:2px solid #8a7a52;color:#ffd23f;z-index:6;opacity:.92}#qsb[data-n]:not([data-n=''])::after,#tlb[data-n]:not([data-n=''])::after{content:attr(data-n);position:absolute;top:-4px;right:-4px;min-width:16px;height:16px;border-radius:8px;background:#d8283a;color:#fff;font-size:10px;line-height:16px;font-weight:700;text-align:center;border:1px solid #fff}
+#qsb,#tlb,#sacb,#dgnb,#svb{position:absolute;right:8px;width:38px;height:38px;border-radius:50%;padding:0!important;min-height:0!important;font-size:18px;display:flex;align-items:center;justify-content:center;background:rgba(20,16,12,.72);border:2px solid #8a7a52;color:#ffd23f;z-index:6;opacity:.92}#qsb[data-n]:not([data-n=''])::after,#tlb[data-n]:not([data-n=''])::after{content:attr(data-n);position:absolute;top:-4px;right:-4px;min-width:16px;height:16px;border-radius:8px;background:#d8283a;color:#fff;font-size:10px;line-height:16px;font-weight:700;text-align:center;border:1px solid #fff}
 #tpb{position:absolute;top:8px;right:8px;width:38px;height:38px;border-radius:50%;padding:0!important;min-height:0!important;display:flex;align-items:center;justify-content:center;background:radial-gradient(#2a3a5a,#0e1420);border:2px solid #8a7a52;box-shadow:0 2px 8px rgba(0,0,0,.7),0 0 10px rgba(80,150,255,.35);z-index:6;opacity:.92}#tpb:active{transform:scale(.93)}
 #tb{display:flex;gap:6px;padding:6px 8px;background:linear-gradient(#3a342a,#241f18);border-top:2px solid #6e675b}
 #tb button{min-height:30px;padding:2px 10px;font-size:12px;border-radius:3px}
@@ -278,7 +278,7 @@ html.sw .mc2{background:linear-gradient(#2b1a66,#120a30);border:2px solid #9a7af
 html.sw .mcard.on .mc2{border-color:#7ff4ff;box-shadow:0 0 22px rgba(127,244,255,.65)}
 html.sw .mor{color:#a99fd6}
 html.sw .mor:before,html.sw .mor:after{background:linear-gradient(90deg,transparent,#7ff4ff)}
-html.sw #tpb,html.sw #sndb,html.sw #qsb,html.sw #tlb,html.sw #sacb,html.sw #pbt,html.sw #sbt,html.sw #cpl{background:radial-gradient(#4a2a9a,#150a38)!important;border:2px solid #7ff4ff!important;border-radius:50%!important;color:#b6f8ff;box-shadow:0 0 12px rgba(127,244,255,.55)}
+html.sw #tpb,html.sw #sndb,html.sw #qsb,html.sw #tlb,html.sw #sacb,html.sw #svb,html.sw #pbt,html.sw #sbt,html.sw #cpl{background:radial-gradient(#4a2a9a,#150a38)!important;border:2px solid #7ff4ff!important;border-radius:50%!important;color:#b6f8ff;box-shadow:0 0 12px rgba(127,244,255,.55)}
 html.sw .hint,html.sw small,html.sw .st span{color:#a99fd6}
 html.sw .mcont{background:linear-gradient(#ff8af0,#8a3dff 70%,#5a22c0)!important;border-color:#ffd6ff!important}
 html.sw .ngb{color:#a99fd6!important}
@@ -315,7 +315,7 @@ html.sw .mtitle h1{background:linear-gradient(#f4eeff,#cbb8f0 55%,#9a80d0);-webk
 html.sw .mc2{border:2px solid #8a7fb8;box-shadow:0 4px 14px rgba(0,0,0,.5)}
 html.sw .mcard.on .mc2{border-color:#d8c0f4;box-shadow:0 0 0 1px #8a7fb8,0 4px 14px rgba(0,0,0,.5)}
 html.sw .mor:before,html.sw .mor:after{background:linear-gradient(90deg,transparent,#8a7fb8)}
-html.sw #tpb,html.sw #sndb,html.sw #qsb,html.sw #tlb,html.sw #sacb,html.sw #pbt,html.sw #sbt,html.sw #cpl{border:2px solid #8a7fb8!important;color:#e8dcff;box-shadow:0 2px 4px rgba(0,0,0,.5)}
+html.sw #tpb,html.sw #sndb,html.sw #qsb,html.sw #tlb,html.sw #sacb,html.sw #svb,html.sw #pbt,html.sw #sbt,html.sw #cpl{border:2px solid #8a7fb8!important;color:#e8dcff;box-shadow:0 2px 4px rgba(0,0,0,.5)}
 html.sw .qs{border-color:rgba(170,150,220,.5);box-shadow:none}
 html.sw .mcont{background:linear-gradient(#a56fd8,#6a3aa6 70%,#4a2478)!important;border-color:#d8c0f4!important}
 
@@ -2103,7 +2103,7 @@ $('mx').innerHTML=ico('x',22);$('mx').onclick=closeM;$('modal').onclick=e=>{if(e
 $('coin').innerHTML=ico('co',18);
 $('qb').innerHTML=[['ph','Heiltrank',"pot('h')",'qh'],['pm','Manatrank',"pot('m')",'qm']].map(b=>`<button class='qi' onclick="${b[2]}" aria-label='${b[1]}' title='${b[1]}'>${ico(b[0],22)}${b[3]?`<b id='${b[3]}'></b>`:''}</button>`).join('');setTimeout(cabInit,0);
 if(!$('sndb')){const b=document.createElement('button');b.id='sndb';b.setAttribute('aria-label','Sound');b.textContent=AUD.on?'♪':'✕';b.onclick=sndToggle;$('arena').appendChild(b)}
-for(const [id,top,ic,fn,lab] of [['qsb',52,'🏆',"openM('quests')",'Aufgaben'],['tlb',96,'✦',"openM('talents')",'Talente'],['dgnb',140,'🛠',"dbgWin()",'Diagnose'],['sacb',184,'🩸',"sacrifice()",'Aderlass']]){if(!$(id)){const b=document.createElement('button');b.id=id;b.setAttribute('aria-label',lab);b.title=lab;b.style.top=top+'px';b.textContent=ic;b.setAttribute('onclick',fn);$('arena').appendChild(b)}}
+for(const [id,top,ic,fn,lab] of [['qsb',52,'🏆',"openM('quests')",'Aufgaben'],['tlb',96,'✦',"openM('talents')",'Talente'],['dgnb',140,'🛠',"dbgWin()",'Diagnose'],['sacb',184,'🩸',"sacrifice()",'Aderlass'],['svb',184,'💾',"saveNow()",'Speichern']]){if(!$(id)){const b=document.createElement('button');b.id=id;b.setAttribute('aria-label',lab);b.title=lab;b.style.top=top+'px';b.textContent=ic;b.setAttribute('onclick',fn);$('arena').appendChild(b)}}
 if(!$('tpb')){const b=document.createElement('button');b.id='tpb';b.setAttribute('aria-label','Was ist neu');b.title='Was ist neu?';b.onclick=()=>newsWin(true);b.textContent='📰';b.style.fontSize='19px';$('arena').appendChild(b)}
 $('nav').innerHTML=[['h','Held',"openM('inv')"],['id','Dungeon',"openM('dungeon')"],['hm','Schmiede',"openM('forge')"],null,['is','Händler',"openM('shop')"],['it','Karte',"openM('tele')"],['im','Mehr','moreWin()']].map(b=>b?`<button class='nv' onclick="${b[2]}">${ico(b[0],32)}<span>${b[1]}</span></button>`:`<canvas id='orb' width='152' height='152'></canvas>`).join('');
 /* ---------- Was ist neu (Update-Hinweise) ---------- */
@@ -2614,6 +2614,14 @@ function tCast(i,k,t){try{tKraftCast(i,k,t)}catch(e){}const sh=tbv('shield');if(
 /* Umstellung: alte Talente und Pfade erstatten */
 function tMigrate(){if(S.tv2)return;S.tv2=1;let n=0;for(const k in (S.ta||{}))n+=S.ta[k];S.ta={};S.tt={};S.tp=(S.tp||0)+n;if(S.pf){S.dia=(S.dia||0)+10}S.pf=null;S.tpi=0;S.tps=[{},{}];_ttab=null}
 
+
+/* ---------- Speichern-Knopf ---------- */
+async function saveNow(){try{save()}catch(e){}
+ let h=`<h2>💾 Speichern</h2><div class='sd'><div class='st'><span>Auf diesem Gerät</span><b style='color:#3ddc5a'>✓ gespeichert ${new Date().toLocaleTimeString('de-DE')}</b></div><div class='st'><span>Cloud</span><b id='svc'>${CLD.ok?'sichere…':'nicht verfügbar'}</b></div></div>`;
+ h+=CLD.ok?'':`<p class='hint'>Die Cloud gibt es nur im Spiel bei Claude. In dieser Version bleibt der Stand auf diesem Gerät. Sichere ihn zusätzlich mit einem Code (Notiz, Nachricht an dich selbst).</p>`;
+ h+=`<button class='p' style='width:100%' onclick='bkWin()'>Backup-Code anzeigen</button><button style='width:100%;margin-top:6px' onclick='closeW2()'>Schließen</button>`;
+ $('mb2').innerHTML=h;$('modal2').style.display='flex';
+ if(CLD.ok){let ok=false;try{ok=await cloudPush(null,true)}catch(e){}const e=$('svc');if(e){e.textContent=ok?'✓ gesichert':'✗ fehlgeschlagen'+(CLD.msg?' ('+CLD.msg+')':'');e.style.color=ok?'#3ddc5a':'#ff6b6b'}}}
 menu();retr();newsAuto();
 try{const rk=sessionStorage.getItem('wa_resume');if(rk){sessionStorage.removeItem('wa_resume');setTimeout(()=>{try{go(true,rk)}catch(e){}},300)}}catch(e){}
 
