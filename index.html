@@ -2234,6 +2234,27 @@ if(!$('tpb')){const b=document.createElement('button');b.id='tpb';b.setAttribute
 $('nav').innerHTML=[['h','Held',"openM('inv')"],['id','Dungeon',"openM('dungeon')"],['hm','Schmiede',"openM('forge')"],null,['is','Händler',"openM('shop')"],['it','Karte',"openM('tele')"],['im','Mehr','moreWin()']].map(b=>b?`<button class='nv' onclick="${b[2]}">${ico(b[0],32)}<span>${b[1]}</span></button>`:`<canvas id='orb' width='152' height='152'></canvas>`).join('');
 /* ---------- Was ist neu (Update-Hinweise) ---------- */
 const NEWS=[
+ {v:27,d:'31. Oktober',t:'Karten im neuen Stil',l:[
+  'Alle 20 Gebiete wirken jetzt gemalt: Pinselstriche am Boden, dunkle Umrisse und Lichtkanten an Bäumen, Steinen, Gräbern & Co.',
+  'Düsterere Fantasy-Stimmung mit lila Schatten, farbigen Lichtinseln und Funken',
+  'Weniger Gedränge – Helden und Gegner stechen besser heraus',
+  'Der nächste Hintergrund wird schon bei „Stufe geschafft!“ vorbereitet, damit der Wechsel nicht stockt']},
+ {v:26,d:'31. Oktober',t:'Nekromagier bewegt sich flüssiger',l:[
+  'Wird jetzt jedes Bild neu gezeichnet statt mit wenigen Zwischenbildern',
+  'Die Robe weht wellenförmig und beim Laufen nach hinten, die Füße machen Schritte',
+  'Die Flamme in der Hand flackert und lodert beim Angriff auf',
+  'Er gleitet statt zu hüpfen']},
+ {v:25,d:'31. Oktober',t:'Neuer Nekromagier',l:[
+  'Komplett neues, gemaltes Aussehen: lila Robe, Knochen-Schulterplatten, Schädelgürtel mit Ketten, Flammenstab und Seelenflamme in der Hand',
+  'Runenkreis am Boden und kreisende Seelen',
+  'Skins mit eigener Farbe: Blutmagier in Rot, Geistlicher in Blau',
+  'Beschworene Skelette und Zombies erscheinen als leuchtende Geister']},
+ {v:24,d:'30. Oktober',t:'Grafik & Cloud-Speicher',l:[
+  'Kräftigere Farben, sichtbarer Weg und Lichtflecken auf allen Karten',
+  'Leuchtender Ring unter dem Helden, roter Ring unter Gegnern, oranger unter Bossen',
+  'Schadenszahlen ploppen auf, Lava glüht, Fähigkeiten-Buttons zeigen beim Nachladen nur noch die Zeit',
+  'Neu: GitHub-Cloud – dein Spielstand wird automatisch in einem privaten Gist gesichert (⚙ → Cloud-Speicher)',
+  'Neu: Spielstand als Datei sichern und laden, z. B. in iCloud (💾 Speichern)']},
  {v:23,d:'30. Oktober',t:'Stärkere Bosse',l:[
   'Karten-Bosse haben 3× so viel Leben – Bosskämpfe dauern jetzt etwa 8–20 statt 0–8 Sekunden',
   'Dafür treffen Karten-Bosse etwas schwächer, damit die längeren Kämpfe fair bleiben',
