@@ -1939,7 +1939,8 @@ function buyP(k){if(S.gold<40)return;S.gold-=40;S.pot[k]++;save();rm()}
 function buy(i){const g=S.shop[i];if((S.dia||0)<dpr(g)||S.inv.length>=CAPI)return;S.dia-=dpr(g);S.inv.push(g);S.shop.splice(i,1);autoGear();save();rm()}
 function reroll(){if((S.dia||0)<2)return;S.dia-=2;shopGen();save();rm()}
 function tele(){let h=`<button class='p' style='width:100%;margin-bottom:8px' onclick="openM('base')">🏠 Zur Basis (Lager)</button><h2>Teleport</h2><p class='hint'>Höchste Stufe: ${S.max}</p>`;for(let n=S.max;n>=1;n--)h+=`<button style='width:100%;text-align:left;margin:4px 0' class='${n===S.stage?'on':''}' onclick='tp(${n})'>${n%5===0?'Boss · ':''}Stufe ${n}: ${zn(n)}</button>`;$('mb').innerHTML=h}
-function dungeon(){const best=S.dw||0,cps=[];for(let w=1;w<=Math.floor(best/10)*10+1;w+=10)cps.push(w);
+const DGMIN=10;
+function dungeon(){if((S.max||1)<DGMIN&&!(typeof G!=='undefined'&&G&&G.dg)){$('mb').innerHTML=`<h2>Dungeon</h2><p class='hint' style='font-size:15px'>🔒 Der Dungeon öffnet sich ab <b>Stufe ${DGMIN}</b>.</p><p class='hint'>Deine bisher höchste Stufe: <b>${S.max||1}</b> – noch ${DGMIN-(S.max||1)} Stufe${DGMIN-(S.max||1)===1?'':'n'}.</p><button style='width:100%' onclick='closeM()'>Schließen</button>`;return}const best=S.dw||0,cps=[];for(let w=1;w<=Math.floor(best/10)*10+1;w+=10)cps.push(w);
  let h=`<h2>Dungeon</h2><p class='hint'>Kämpfe dich Welle für Welle durch. Nur hier gibt es Legendäre Ausrüstung und bessere Werte als auf der Karte. Alle 10 Wellen wartet ein Boss – nur dort gibt es Mythische Ausrüstung. Beste Welle: ${best}</p>`;
  if(G.dg)h+=`<div class='sd'><b>Du bist im Dungeon · Welle ${G.dg.w}</b></div><button class='p' style='width:100%' onclick='dgLeave()'>Zurück zur Karte</button>`;
  else{const cw=(S.dgl&&S.dgl.n)||0;if(cw>1)h+=`<button class='p' style='width:100%;margin:5px 0;min-height:46px;border-color:#ffd23f' onclick='dgStart(${cw})'>▶ Fortsetzen · Welle ${cw}</button>`;cps.slice(-5).reverse().forEach(w=>{h+=`<button class='p' style='width:100%;margin:5px 0;min-height:46px' onclick='dgStart(${w})'>${w===1?'Dungeon betreten · Welle 1':'Starte bei Welle '+w}</button>`})}
@@ -2268,6 +2269,9 @@ if(!$('tpb')){const b=document.createElement('button');b.id='tpb';b.setAttribute
 $('nav').innerHTML=[['h','Held',"openM('inv')"],['id','Dungeon',"openM('dungeon')"],['hm','Schmiede',"openM('forge')"],null,['is','Händler',"openM('shop')"],['it','Karte',"openM('tele')"],['im','Mehr','moreWin()']].map(b=>b?`<button class='nv' onclick="${b[2]}">${ico(b[0],32)}<span>${b[1]}</span></button>`:`<canvas id='orb' width='152' height='152'></canvas>`).join('');
 /* ---------- Was ist neu (Update-Hinweise) ---------- */
 const NEWS=[
+ {v:48,d:'31. Oktober',t:'Dungeon ab Stufe 10',l:[
+  'Der Dungeon öffnet sich jetzt erst, wenn du Stufe 10 erreicht hast',
+  'Vorher zeigt das Dungeon-Fenster, wie viele Stufen noch fehlen']},
  {v:47,d:'31. Oktober',t:'Spielfeld erholt sich nach Safari-Hängern',l:[
   'Behoben: Nach einem Hänger wurde das Spielfeld nur noch in zwei Dritteln der Fläche gezeichnet, mit verschmierten Resten daneben',
   'Setzt Safari die Grafik zurück, baut das Spiel Hintergrund, Figuren und Lebenskugel automatisch neu auf',
