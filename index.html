@@ -709,7 +709,17 @@ function necroRaw(c,x,y,s,mv,a,fl){const im=nSpr();if(!im)return necroVec(c,x,y,
   const rt=t/2400;for(let i=0;i<12;i++){c.save();c.rotate(rt+i*.5236);c.translate(132,0);c.rotate(1.57);c.beginPath();c.moveTo(-7,-8);c.lineTo(0,6);c.lineTo(7,-8);c.moveTo(-5,0);c.lineTo(5,0);c.stroke();c.restore()}c.restore()}
  /* Bild: Höhe 470 Einheiten, Füße auf dem Boden; leichtes Atmen und Wehen */
  const ih=470,iw=ih*im.width/im.height,ix=200-.51*iw,sy=1+br*.012+ap*.03,sk=(sw*.004+Math.sin(t/900)*.008)*(mv?1.6:1);
- c.save();c.translate(200,494);c.transform(1,0,-sk,sy,0,0);c.drawImage(im,ix-200,-ih,iw,ih);c.restore();
+ {const IW=im.width,IH=im.height,ph2=t/(mv?105:520),tr=mv?22:0,amp=mv?9:3.2,top=-ih*sy,nS=MOB?22:30,FX=.745,FY=.37;
+  const dxAt=yy=>{const lo=Math.max(0,(yy-.48)/.52);return -tr*lo*lo+Math.sin(ph2*(mv?1:1.3)-yy*7)*amp*Math.pow(lo,1.3)+Math.sin(t/1700+yy*3)*1.2*lo};
+  const lift=mv?[Math.max(0,Math.sin(ph))*9,Math.max(0,-Math.sin(ph))*9]:[0,0];
+  c.save();c.translate(200,494);c.transform(1,0,-sk,1,0,0);
+  for(let j=0;j<nS;j++){const y0=j/nS,y1=(j+1)/nS,ym=(y0+y1)/2,dx=dxAt(ym),sy0=Math.floor(y0*IH),sy1=Math.min(IH,Math.ceil(y1*IH)+1),dy=top+sy0/IH*ih*sy,dh=(sy1-sy0)/IH*ih*sy;
+   if(ym<FY){const sx1=Math.round(FX*IW);c.drawImage(im,0,sy0,sx1,sy1-sy0,ix-200+dx,dy,sx1/IW*iw,dh)}
+   else if(ym>.86&&mv){const sm=Math.round(.52*IW);c.drawImage(im,0,sy0,sm,sy1-sy0,ix-200+dx,dy-lift[0],sm/IW*iw,dh);c.drawImage(im,sm,sy0,IW-sm,sy1-sy0,ix-200+dx+sm/IW*iw,dy-lift[1],(IW-sm)/IW*iw,dh)}
+   else c.drawImage(im,0,sy0,IW,sy1-sy0,ix-200+dx,dy,iw,dh)}
+  {const sx0=Math.round(FX*IW),sh0=Math.round(FY*IH)+1,bx=ix-200+.83*iw+dxAt(FY),by=top+FY*ih*sy,fl3=Math.sin(t/80)*.5+Math.sin(t/53)*.5,k2=1+ap*.22;
+   c.save();c.translate(bx,by);c.transform(1,0,(mv?.28:0)+Math.sin(t/240)*.05,1,0,0);c.scale((1-fl3*.035)*k2,(1+fl3*.07+(mv?.05:0))*k2);c.drawImage(im,sx0,0,IW-sx0,sh0,(FX-.83)*iw,-FY*ih*sy,(IW-sx0)/IW*iw,sh0/IH*ih*sy);c.restore()}
+  c.restore()}
  /* leuchtende Stellen: Handflamme, Stabflamme, Augen, Brustkristall */
  const P=(fx,fy)=>[ix+fx*iw,494-ih*sy+fy*ih*sy];
  c.save();c.globalCompositeOperation='lighter';
@@ -1708,10 +1718,10 @@ function offHand(c,k,ox,oy,mv,a){const g=(typeof S!=='undefined'&&S&&S.gear)?S.g
  else if(k==='n'){c.translate(-19,-35+Math.sin(t/500)*1.8);c.rotate(Math.sin(t/450)*.16+wk*.28+ap*.45);c.translate(0,9);const gl=(.55+Math.sin(t/330)*.25)*(1+ap*.9),q=c.createRadialGradient(0,2,0,0,2,16+ap*8);const NG=nGlow()[0];q.addColorStop(0,'rgba('+NG+','+Math.min(1,gl)+')');q.addColorStop(1,'rgba('+NG+',0)');c.fillStyle=q;c.fillRect(-26,-24,52,52);ln(c,0,-9,0,-5,'#d8b24c',1.2);po(c,[-3.5,-5,3.5,-5,5,-2,-5,-2],'#d8b24c');c.fillStyle=lg(c,0,-2,0,10,'#e8fff4',col);c.beginPath();c.moveTo(-5,-2);c.lineTo(5,-2);c.quadraticCurveTo(7,6,3,10);c.lineTo(-3,10);c.quadraticCurveTo(-7,6,-5,-2);c.fill();c.strokeStyle='rgba(0,0,0,.6)';c.lineWidth=.7;c.stroke();orbG(c,0,3,2.2+ap,'#fff',col);ol(c,-3,10,3,10,2,'#d8b24c');for(let i=0;i<3;i++){const w2=((t/700+i*.33)%1);orbG(c,Math.sin(w2*6+i)*3,2-w2*14,.8,'rgba(255,255,255,'+(1-w2)+')','rgba(124,240,192,0)')}}
  c.restore()}
 function hero(c,k,x,y,s,mv,a,fl){const D=Math.min(3,Math.max(Q,Math.ceil(1.6*s)));const t=T(),f=fl||1,at=a||0,ap=Math.sin(Math.min(1,at)*Math.PI);
- const hop=mv?-Math.abs(Math.sin(t/105))*4.6*s:0,br=Math.sin(t/480),sq=1+br*.022+(mv?Math.sin(t/105)*.04:0)+ap*.07,sx=1/sq*(1+ap*.03);
+ const nsp=k==='n'&&nSpr(),hop=mv?-Math.abs(Math.sin(t/105))*(nsp?1.2:4.6)*s:0,br=Math.sin(t/480),sq=1+br*.022+(mv?Math.sin(t/105)*.04:0)+ap*.07,sx=1/sq*(1+ap*.03);
  const rot=Math.sin(t/1100)*.03+(mv?.1*f+Math.sin(t/105)*.04:0)+ap*.14*f-(at>0&&at<.3?.06*f:0),lg=ap*13*s*f;
  c.save();c.translate(x+lg,y+hop);c.rotate(rot);c.scale(sx,sq);
- if(BK.on)heroBlit(c,k,D,s,fl,mv,a||0);else lit(c,'h'+D+k,150,140,75,100,D,0,0,s,fl,[19,17],(oc,ox,oy)=>{heroRaw(oc,k,ox,oy,1,mv,a,1);if(!(k==='n'&&nSpr())){offHand(oc,k,ox,oy,mv,a);gearSil(oc,k,ox,oy)}gearFx(oc,k,ox,oy,mv)});
+ if(nsp){c.save();c.scale(s*(fl||1),s);necroRaw(c,0,0,1,mv,a||0,1);gearFx(c,k,0,0,mv);c.restore()}else if(BK.on)heroBlit(c,k,D,s,fl,mv,a||0);else lit(c,'h'+D+k,150,140,75,100,D,0,0,s,fl,[19,17],(oc,ox,oy)=>{heroRaw(oc,k,ox,oy,1,mv,a,1);if(!(k==='n'&&nSpr())){offHand(oc,k,ox,oy,mv,a);gearSil(oc,k,ox,oy)}gearFx(oc,k,ox,oy,mv)});
  c.restore();gearAura(c,x,y,s,k);
  const n=LOW?3:7,cl={g:['255,90,50',1],u:['150,255,120',1],m:['130,190',2],d:['255,150,40',1],n:[nGlow()[0],1]}[k];if(!cl)return;
  c.save();c.globalCompositeOperation='lighter';
