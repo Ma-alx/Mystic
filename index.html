@@ -2234,6 +2234,10 @@ if(!$('tpb')){const b=document.createElement('button');b.id='tpb';b.setAttribute
 $('nav').innerHTML=[['h','Held',"openM('inv')"],['id','Dungeon',"openM('dungeon')"],['hm','Schmiede',"openM('forge')"],null,['is','Händler',"openM('shop')"],['it','Karte',"openM('tele')"],['im','Mehr','moreWin()']].map(b=>b?`<button class='nv' onclick="${b[2]}">${ico(b[0],32)}<span>${b[1]}</span></button>`:`<canvas id='orb' width='152' height='152'></canvas>`).join('');
 /* ---------- Was ist neu (Update-Hinweise) ---------- */
 const NEWS=[
+ {v:28,d:'31. Oktober',t:'Monster im neuen Stil',l:[
+  'Alle Monster haben jetzt dunkle Umrisse und eine Licht-Schattierung – passend zum Nekromagier und den Karten',
+  'Augen und Edelsteine der Monster glühen',
+  'Geister und Irrlichter behalten ihren weichen Schein']},
  {v:27,d:'31. Oktober',t:'Karten im neuen Stil',l:[
   'Alle 20 Gebiete wirken jetzt gemalt: Pinselstriche am Boden, dunkle Umrisse und Lichtkanten an Bäumen, Steinen, Gräbern & Co.',
   'Düsterere Fantasy-Stimmung mit lila Schatten, farbigen Lichtinseln und Funken',
@@ -2468,7 +2472,20 @@ function bkGC(map,max){if(map.size<=max)return;const it=map.keys();while(map.siz
 /* --- Monster --- */
 function monBake(k,tint){const key=k+'|'+tint;let B=BK.mon.get(key);if(B){BK.mon.delete(key);BK.mon.set(key,B)}if(!B){B={f:new Array(BKN).fill(null),n:0};BK.mon.set(key,B);bkGC(BK.mon,MOB?12:24)}return B}
 function monFrame(B,k,tint,i){if(B.f[i])return B.f[i];const a=performance.now();const cv=bkCanvas(170*BKS,150*BKS),q=cv.getContext('2d');q.setTransform(BKS,0,0,BKS,0,0);
- bkWith(i*MPER/BKN,()=>mon0(q,k,85,105,1,1,tint,{},0));B.f[i]=cv;B.n++;BK.n++;BK.ms+=performance.now()-a;return cv}
+ bkWith(i*MPER/BKN,()=>mon0(q,k,85,105,1,1,tint,{},0));monStyle(cv,k);B.f[i]=cv;B.n++;BK.n++;BK.ms+=performance.now()-a;return cv}
+/* Mal-Filter für Monster: Schattierung, Lichtkante, dunkler Umriss (einmal pro gespeichertem Bild) */
+let MST=null;function monStyle(cv,mk){try{const w=cv.width,h=cv.height;if(!MST||MST[0].width!==w||MST[0].height!==h){MST=[0,1].map(()=>bkCanvas(w,h))}const[A,R]=MST,a=A.getContext('2d'),r=R.getContext('2d'),q=cv.getContext('2d'),k=w/170;
+ a.setTransform(1,0,0,1,0,0);a.globalCompositeOperation='copy';a.globalAlpha=1;a.drawImage(cv,0,0);
+ a.globalCompositeOperation='source-atop';const g=a.createLinearGradient(0,h*.35,0,h*.78);g.addColorStop(0,'rgba(255,238,210,.2)');g.addColorStop(.45,'rgba(128,110,150,0)');g.addColorStop(1,'rgba(34,12,70,.42)');a.fillStyle=g;a.fillRect(0,0,w,h);
+ r.setTransform(1,0,0,1,0,0);r.globalCompositeOperation='copy';r.drawImage(cv,0,0);r.globalCompositeOperation='destination-out';r.drawImage(cv,1.3*k,1.7*k);r.globalCompositeOperation='source-in';r.fillStyle='#ffe2b0';r.fillRect(0,0,w,h);
+ a.globalCompositeOperation='source-atop';a.globalAlpha=.34;a.drawImage(R,0,0);a.globalAlpha=1;
+ const gl=[];try{const d=a.getImageData(0,0,w,h).data,bs=Math.max(4,Math.round(5*k)),nx=Math.ceil(w/bs),ny=Math.ceil(h/bs),cnt=new Uint16Array(nx*ny),sx=new Float32Array(nx*ny),sy=new Float32Array(nx*ny),cr=new Float32Array(nx*ny*3);
+  for(let y=0;y<h;y++)for(let x=0;x<w;x++){const i=(y*w+x)*4;if(d[i+3]<200)continue;const R=d[i],G=d[i+1],B=d[i+2],mx=Math.max(R,G,B),mn=Math.min(R,G,B);if(mx<150||mx-mn<110)continue;const j=Math.floor(y/bs)*nx+Math.floor(x/bs);cnt[j]++;sx[j]+=x;sy[j]+=y;cr[j*3]+=R;cr[j*3+1]+=G;cr[j*3+2]+=B}
+  const big=bs*bs*.32;for(let j=0;j<nx*ny;j++){const n=cnt[j];if(!n||n>big)continue;const jx=j%nx,jy=(j/nx)|0;let nb=0;for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){const xx=jx+dx,yy=jy+dy;if((dx||dy)&&xx>=0&&yy>=0&&xx<nx&&yy<ny)nb+=cnt[yy*nx+xx]}if(nb>big*1.2)continue;gl.push([sx[j]/n,sy[j]/n,cr[j*3]/n|0,cr[j*3+1]/n|0,cr[j*3+2]/n|0])}}catch(e){}
+ const soft=mk==='ghost'||mk==='wisp';
+ q.save();q.setTransform(1,0,0,1,0,0);q.globalCompositeOperation='copy';q.globalAlpha=1;const o=1.15*k;if(soft){q.drawImage(A,0,0)}else{q.drawImage(A,o,0);q.globalCompositeOperation='source-over';for(const d of[[-o,0],[0,o],[0,-o],[o*.7,o*.7],[-o*.7,o*.7],[o*.7,-o*.7],[-o*.7,-o*.7]])q.drawImage(A,d[0],d[1]);
+ q.globalCompositeOperation='source-in';q.fillStyle='rgba(12,6,22,.92)';q.fillRect(0,0,w,h);q.globalCompositeOperation='source-over';q.drawImage(A,0,0)}
+ q.globalCompositeOperation='lighter';for(const e of gl.slice(0,6)){const rr=4*k,g2=q.createRadialGradient(e[0],e[1],0,e[0],e[1],rr);g2.addColorStop(0,'rgba('+e[2]+','+e[3]+','+e[4]+',.55)');g2.addColorStop(.35,'rgba('+e[2]+','+e[3]+','+e[4]+',.2)');g2.addColorStop(1,'rgba('+e[2]+','+e[3]+','+e[4]+',0)');q.fillStyle=g2;q.fillRect(e[0]-rr,e[1]-rr,rr*2,rr*2)}q.restore()}catch(e){}}
 function monPick(B,i){if(B.f[i])return B.f[i];for(let d=1;d<BKN;d++){const a=B.f[(i+d)%BKN];if(a)return a;const b=B.f[(i-d+BKN)%BKN];if(b)return b}return null}
 function monDraw(c,k,x,y,s,fl,tint,u){const B=monBake(k,tint);let i;
  if(u.frz>0&&u.__bf!==undefined)i=u.__bf;else{const ph=(Date.now()/120+(u.x||0)*.3)%(4*Math.PI);i=Math.floor((ph<0?ph+4*Math.PI:ph)/(4*Math.PI)*BKN)%BKN;u.__bf=i}
