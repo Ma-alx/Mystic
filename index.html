@@ -2263,6 +2263,9 @@ if(!$('tpb')){const b=document.createElement('button');b.id='tpb';b.setAttribute
 $('nav').innerHTML=[['h','Held',"openM('inv')"],['id','Dungeon',"openM('dungeon')"],['hm','Schmiede',"openM('forge')"],null,['is','Händler',"openM('shop')"],['it','Karte',"openM('tele')"],['im','Mehr','moreWin()']].map(b=>b?`<button class='nv' onclick="${b[2]}">${ico(b[0],32)}<span>${b[1]}</span></button>`:`<canvas id='orb' width='152' height='152'></canvas>`).join('');
 /* ---------- Was ist neu (Update-Hinweise) ---------- */
 const NEWS=[
+ {v:44,d:'31. Oktober',t:'Spiel läuft im eigenen Takt weiter',l:[
+  'Hört Safari auf dem iPhone auf, das Spiel zum Zeichnen aufzurufen, zeichnet das Spiel jetzt selbst mit etwa 30 Bildern pro Sekunde weiter',
+  'Vorher lief es in solchen Momenten nur mit einem Bild pro Sekunde']},
  {v:43,d:'31. Oktober',t:'Schadenszahlen sparsamer',l:[
   'Schadenszahlen haben wieder eine feste Schriftgröße (auf dem Handy ohne Aufploppen) – das iPhone muss die Buchstaben nicht mehr bei jedem Bild neu berechnen',
   'Die Diagnose misst jetzt auch, wie lange Schrift zum Zeichnen braucht']},
@@ -2526,7 +2529,8 @@ function cabInit(){const q=$('qb');if(!q||$('cabb'))return;const b=document.crea
  let lt0=0;try{document.addEventListener('touchend',e=>{const n=Date.now();if(n-lt0<320&&!ok(e.target)&&e.cancelable)e.preventDefault();lt0=n},{passive:false})}catch(e){}
 })();
 /* ---------- Bild-Wächter: falls das Handy keine Bilder anfordert, läuft das Spiel trotzdem weiter ---------- */
-let _wdN=0,_wdT=0,_wdK=0;setInterval(()=>{try{if(document.hidden||!S||!G||$('game').style.display==='none')return;const n=performance.now(),d=n-_lastF;if(d>1000&&n-_wdT>1000){_wdN++;_wdT=n;_wdA=1;cancelAnimationFrame(raf);loop(n,1)}else if(d>300&&n-_wdK>300){_wdK=n;cancelAnimationFrame(raf);raf=requestAnimationFrame(loop)}}catch(e){}},120);
+/* Eigener Takt: Stellt Safari das Zeichnen (requestAnimationFrame) ein, läuft das Spiel mit ~30 Bildern/s selbst weiter */
+let _wdN=0,_wdT=0;setInterval(()=>{try{if(document.hidden||!S||!G||$('game').style.display==='none')return;const n=performance.now();if(n-_lastF>(_wdA?25:100)){if(!_wdA)_wdN++;_wdT=n;_wdA=1;cancelAnimationFrame(raf);loop(n,1)}}catch(e){}},33);
 function chainHit(t,dmg,n,V){const L=[];let cur=t,prev=G.p;for(let q=0;q<n&&cur;q++){L.push(cur);G.fx.push({t:'a',x1:prev.x,y1:prev.y-(q?0:10),x2:cur.x,y2:cur.y,l:.25,m:.25,c:'#c8b0ff'});G.fx.push({t:'r',x:cur.x,y:cur.y,r:18,l:.25,m:.25,c:'#e8dcff'});hit(cur,dmg*Math.pow(.85,q)*(1+(cur.frz>0?(V.fd||0):0)));prev=cur;cur=G.en.filter(e=>e.hp>0&&!L.includes(e)&&dist(e,prev)<160).sort((a,b)=>dist(a,prev)-dist(b,prev))[0]}return L}
 /* ---------- Feuerflächen, Kraft-Talente (klassenspezifisch) ---------- */
 function firePool(x,y,r,du,dm){G.fp=G.fp||[];G.fp.push({x,y,r,l:du,tk:0,dm:Math.max(1,Math.round(dm))});if(G.fp.length>6)G.fp.shift();G.fx.push({t:'c',x,y,r,l:.4,c:'#ff7a2a'})}
