@@ -407,7 +407,7 @@ var CPUALL=(()=>{try{sessionStorage.removeItem('wa_cpu_s');if(!localStorage.getI
 var MOB=(()=>{try{return matchMedia('(pointer:coarse)').matches||/iPhone|iPad|Android/i.test(navigator.userAgent)}catch(e){return false}})();
 /* Handy: Zwischenbilder (Sprites, Wappen, Orb) auf dem Hauptprozessor malen – nur das Spielfeld nutzt den Grafikchip */
 (()=>{try{if(!MOB&&!CPUALL)return;const g=HTMLCanvasElement.prototype.getContext;HTMLCanvasElement.prototype.getContext=function(t,o){if(t==='2d'&&((this.id!=='cv'&&this.id!=='ovc')||CPUALL)){o=Object.assign({},o||{},{willReadFrequently:true})}return g.call(this,t,o)}}catch(e){}})();
-var SLW={n:'',ms:0,at:0,last:''};(()=>{try{const P=CanvasRenderingContext2D.prototype;for(const fn of ['drawImage','getImageData','putImageData','createPattern','fill','stroke','fillRect','clearRect']){const o=P[fn];P[fn]=function(){const a=performance.now();const r=o.apply(this,arguments);const d=performance.now()-a;if(d>40){const src=arguments[0]&&arguments[0].width?(arguments[0].width+'×'+arguments[0].height):'';const tg=this.canvas===window.__cv0?'Spielfeld':(this.canvas.width+'×'+this.canvas.height);SLW.last=fn+' '+src+'→'+tg+' '+Math.round(d)+'ms';SLW.at=performance.now();if(d>SLW.ms){SLW.ms=d;SLW.n=SLW.last}}return r}}}catch(e){}})();
+var SLW={n:'',ms:0,at:0,last:''};(()=>{try{const P=CanvasRenderingContext2D.prototype;for(const fn of ['drawImage','getImageData','putImageData','createPattern','fill','stroke','fillRect','clearRect','fillText','strokeText']){const o=P[fn];P[fn]=function(){const a=performance.now();const r=o.apply(this,arguments);const d=performance.now()-a;if(d>40){const src=arguments[0]&&arguments[0].width?(arguments[0].width+'×'+arguments[0].height):'';const tg=this.canvas===window.__cv0?'Spielfeld':(this.canvas.width+'×'+this.canvas.height);SLW.last=fn+' '+src+'→'+tg+' '+Math.round(d)+'ms';SLW.at=performance.now();if(d>SLW.ms){SLW.ms=d;SLW.n=SLW.last}}return r}}}catch(e){}})();
 var PRB={sv:0,svMs:0,svMx:0,svSz:0,cp:0,cpEnd:0,cpMs:0,cpN:0,mu:0};
 
 (()=>{const P=CanvasRenderingContext2D.prototype,a=P.arc,e=P.ellipse;P.arc=function(x,y,r,...q){return a.call(this,x,y,Math.max(0,r),...q)};P.ellipse=function(x,y,rx,ry,...q){return e.call(this,x,y,Math.max(0,rx),Math.max(0,ry),...q)}})();
@@ -1839,7 +1839,7 @@ function draw(){_mq=MOB?1:2;
   if(!SW){cx.save();cx.globalAlpha=.07;cx.globalCompositeOperation='overlay';const ox=-Math.floor(Math.random()*128),oy=-Math.floor(Math.random()*128);for(let x=ox;x<W;x+=128)for(let y=oy;y<H;y+=128)cx.drawImage(NZ,x,y);cx.restore()}
   if(!MOB){cx.save();cx.globalCompositeOperation='saturation';cx.globalAlpha=SW?.1:.12;cx.fillStyle=SW?'#ff2a40':'#808080';cx.fillRect(0,0,W,H);cx.restore()}
   if(!(MOB&&SW)){cx.save();cx.globalCompositeOperation='soft-light';cx.globalAlpha=SW?.55:.35;const cg=cx.createLinearGradient(0,0,0,H);cg.addColorStop(0,SW?'#7fb4ff':'#6a7fa8');cg.addColorStop(.55,SW?'#fff0d0':'#d8c8a8');cg.addColorStop(1,SW?'#ffb070':'#a8602a');cx.fillStyle=cg;cx.fillRect(0,0,W,H);cx.restore()}}
- for(const q of G.pop){cx.globalAlpha=Math.min(1,q.l*1.5);txt(q.t,q.x,q.y,Math.round(19*(1+Math.max(0,q.l-.84)*3.2)),q.c);cx.globalAlpha=1}
+ for(const q of G.pop){cx.globalAlpha=Math.min(1,q.l*1.5);const k=MOB?1:1+Math.max(0,q.l-.84)*3.2;if(k>1.01){cx.save();cx.translate(q.x,q.y);cx.scale(k,k);txt(q.t,0,0,19,q.c);cx.restore()}else txt(q.t,q.x,q.y,19,q.c);cx.globalAlpha=1}
  if(G.ban>0){cx.globalAlpha=Math.min(1,G.ban);txt(G.dg?'Dungeon · Welle '+G.dg.w:zn(S.stage),W/2,60,27,'#e8d8a8');txt('Stufe '+S.stage,W/2,88,17,'#cfc6b0');if(G.mod)txt('⚡ '+G.mod.n,W/2,112,16,'#ffb070');cx.globalAlpha=1}
  if(G.clear>0)txt(G.dg?'Welle geschafft!':'Stufe geschafft!',W/2,H/2,30,'#ffd23f');
  else if(p.dead>0)txt('Besiegt – neuer Versuch …',W/2,H/2,24,'#ff6b6b');
@@ -2263,6 +2263,9 @@ if(!$('tpb')){const b=document.createElement('button');b.id='tpb';b.setAttribute
 $('nav').innerHTML=[['h','Held',"openM('inv')"],['id','Dungeon',"openM('dungeon')"],['hm','Schmiede',"openM('forge')"],null,['is','Händler',"openM('shop')"],['it','Karte',"openM('tele')"],['im','Mehr','moreWin()']].map(b=>b?`<button class='nv' onclick="${b[2]}">${ico(b[0],32)}<span>${b[1]}</span></button>`:`<canvas id='orb' width='152' height='152'></canvas>`).join('');
 /* ---------- Was ist neu (Update-Hinweise) ---------- */
 const NEWS=[
+ {v:43,d:'31. Oktober',t:'Schadenszahlen sparsamer',l:[
+  'Schadenszahlen haben wieder eine feste Schriftgröße (auf dem Handy ohne Aufploppen) – das iPhone muss die Buchstaben nicht mehr bei jedem Bild neu berechnen',
+  'Die Diagnose misst jetzt auch, wie lange Schrift zum Zeichnen braucht']},
  {v:42,d:'31. Oktober',t:'Speicher-Messung',l:[
   'Die Diagnose zeigt jetzt, wie viele Zeichenflächen das Spiel belegt und wie sich der Speicher beim Spielen entwickelt (alle 30 Sekunden ein Messpunkt)',
   'So lässt sich herausfinden, warum das Spielfeld auf manchen iPhones nach einiger Zeit leer bleibt']},
