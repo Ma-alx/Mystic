@@ -1712,12 +1712,12 @@ function gearSil(c,k,ox,oy){const G_=(typeof S!=='undefined'&&S&&S.gear)?S.gear:
  for(const [sl,q] of [['r1',-1],['r2',1]]){const rg=G_[sl];if(rg&&rg.ri>=1){const col=RC(rg),x=q*12.4,y=-10;po(c,[x-2,y-2.2,x+2,y-2.2,x+2.3,y+2.2,x-2.3,y+2.2],sh(gcol('a',k),-.1));ln(c,x-2.2,y-2.2,x+2.2,y-2.2,col,.9);orbG(c,x,y,1.1+rg.ri*.12,'#fff',col)}}
  c.restore()}
 function gearFx(c,k,ox,oy,mv){const G_=(typeof S!=='undefined'&&S&&S.gear)?S.gear:null;if(!G_)return;const t=T(),RC=g=>RAR[g.ri][1];
- c.save();c.translate(ox,oy);c.lineCap='round';c.lineJoin='round';
- const a=G_.a;if(a&&a.ri>=2&&k!=='m'&&!(k==='n'&&nSpr())){const col=RC(a),bc=k==='n'?'#d9d3bd':sh(gcol('a',k),.25);for(const q of[-1,1]){const x=q*10,y=-26;orbG(c,x,y,3.3+a.ri*.35,sh(bc,.3),sh(bc,-.45));c.strokeStyle=col;c.lineWidth=.9;c.beginPath();c.arc(x,y,3.3+a.ri*.35,0,7);c.stroke();if(a.ri>=4)po(c,[x-1.6,y-2.4,x+q*.8,y-7-a.ri*.8,x+1.6,y-2.4],col)}}
+ c.save();c.translate(ox,oy);c.lineCap='round';c.lineJoin='round';const ns=k==='n'&&nSpr();
+ const a=G_.a;if(a&&a.ri>=2&&k!=='m'&&!ns){const col=RC(a),bc=k==='n'?'#d9d3bd':sh(gcol('a',k),.25);for(const q of[-1,1]){const x=q*10,y=-26;orbG(c,x,y,3.3+a.ri*.35,sh(bc,.3),sh(bc,-.45));c.strokeStyle=col;c.lineWidth=.9;c.beginPath();c.arc(x,y,3.3+a.ri*.35,0,7);c.stroke();if(a.ri>=4)po(c,[x-1.6,y-2.4,x+q*.8,y-7-a.ri*.8,x+1.6,y-2.4],col)}}
  if(a&&a.ri>=2&&k==='m'){const col=RC(a);c.strokeStyle=col;c.lineWidth=1.3;c.beginPath();c.moveTo(-8,-27);c.quadraticCurveTo(0,-23,8,-27);c.stroke()}
- const h=G_.h;if(h&&h.ri>=3){const col=RC(h),hy=k==='m'?-53:-47+(k==='d'?-2:0);for(let i=-1;i<=1;i++)po(c,[i*4-1.7,hy,i*4,hy-4-(i?0:3)-h.ri*.6,i*4+1.7,hy],col);if(h.ri>=5){c.strokeStyle=col;c.globalAlpha=.55+Math.sin(t/300)*.25;c.lineWidth=1;c.beginPath();c.ellipse(0,hy-9,9,2.6,0,0,7);c.stroke();c.globalAlpha=1}}
- const n=G_.n;if(n&&n.ri>=2){orbG(c,0,-25,1.5+n.ri*.22,'#ffffff',RC(n))}
- const w=G_.w;if(w&&w.ri>=3){const col=RC(w),bx=k==='m'||k==='n'?15:k==='u'?11:14,by=k==='m'||k==='n'?-52:k==='u'?-20:-34,r=7+w.ri*1.3,gl=.35+Math.sin(t/240)*.12+(w.ri>=5?.12:0),q=c.createRadialGradient(bx,by,0,bx,by,r);q.addColorStop(0,col);q.addColorStop(1,'rgba(0,0,0,0)');c.globalAlpha=gl;c.fillStyle=q;c.fillRect(bx-r,by-r,r*2,r*2);c.globalAlpha=1}
+ const h=G_.h;if(h&&h.ri>=3&&!ns){const col=RC(h),hy=k==='m'?-53:-47+(k==='d'?-2:0);for(let i=-1;i<=1;i++)po(c,[i*4-1.7,hy,i*4,hy-4-(i?0:3)-h.ri*.6,i*4+1.7,hy],col);if(h.ri>=5){c.strokeStyle=col;c.globalAlpha=.55+Math.sin(t/300)*.25;c.lineWidth=1;c.beginPath();c.ellipse(0,hy-9,9,2.6,0,0,7);c.stroke();c.globalAlpha=1}}
+ const n=G_.n;if(n&&n.ri>=2&&!ns){orbG(c,0,-25,1.5+n.ri*.22,'#ffffff',RC(n))}
+ const w=G_.w;if(w&&w.ri>=3){const col=RC(w),bx=ns?-26:k==='m'||k==='n'?15:k==='u'?11:14,by=ns?-50:k==='m'||k==='n'?-52:k==='u'?-20:-34,r=7+w.ri*1.3,gl=.35+Math.sin(t/240)*.12+(w.ri>=5?.12:0),q=c.createRadialGradient(bx,by,0,bx,by,r);q.addColorStop(0,col);q.addColorStop(1,'rgba(0,0,0,0)');c.globalAlpha=gl;c.fillStyle=q;c.fillRect(bx-r,by-r,r*2,r*2);c.globalAlpha=1}
  c.restore()}
 function gearAura(c,x,y,s,k){const G_=(typeof S!=='undefined'&&S&&S.gear)?S.gear:null;if(!G_)return;let hi=0,mx=0,mc=null,sc_={};for(const q of GK){const g=G_[q];if(!g)continue;if(g.ri>=4)hi++;if(g.ri>mx){mx=g.ri;mc=RAR[g.ri][1]}if(g.st)sc_[g.st]=(sc_[g.st]||0)+1}
  let sid=null,sn=0;for(const q in sc_)if(sc_[q]>sn){sn=sc_[q];sid=q}const setOn=sn>=3,col=setOn?SETS[sid][1]:mc,sk=skinT();if(hi<2&&!setOn)return;
@@ -1856,7 +1856,7 @@ function inv(){
   else{const mx=(g.u||0)>=upMax(g);h+=`<div class='ivb'><button ${S.gold<uc(g)||(S.my||0)<ucm(g)||mx?'disabled':''} onclick="upg('${sel.v}')">${mx?'Maximal':'Verbessern '+uc(g)+' Gold'+(ucm(g)?' + '+ucm(g)+' 💠':'')}</button><button ${S.inv.length>=CAPI?'disabled':''} onclick="unequip('${sel.v}')">Ablegen</button></div>`}
   h+='</div>'}
  else h+=`<div class='ivs'>ANG <b>${st.at}</b> · LP <b>${st.hp}</b> · ${isR()?RN():'Mana'} <b>${isR()?100:50+S.lv*5}</b> · Gold <b>${S.gold}</b><br>Krit <b>${st.cc}%</b> · KS <b>${st.cd}%</b> · Ausw. <b>${st.dg}%</b>${st.ls?` · LE <b>${st.ls}%</b>`:''}${isR()?(st.rg||st.rp?` · ${RN()} <b>+${st.rg}% · +${st.rp}/s</b>`:''):(st.mr||st.mx?` · Mana <b>+${st.mr}/s · +${st.mx}</b>`:'')}</div>`;
- h+=`<div class='ivf'><button class='${ifl?'':'on p'}' onclick="ifl='';rm()">Alle</button>${Object.keys(TY).map(t=>`<button class='${ifl===t?'on p':''}' onclick="ifl='${t}';rm()">${ico(t,16)}</button>`).join('')}</div><div class='ivf'><b style='font-size:11.5px;flex:1;white-space:nowrap'>${S.inv.length}/${CAPI}</b><button title='Sortieren' onclick='sortInv()'>⇅</button><button onclick='storeWeak()'>📦 Einlagern</button><button onclick='sellWeak()'>💰 Verkaufen</button><button class='${asOn()?'on':''}' title='Ausrüstung automatisch verkaufen' onclick='asTog()'>🤖 Auto ${asOn()?'An':'Aus'}</button><button class='p' onclick="openM('base')">🏠 ${(S.lg||[]).length}</button></div><div class='inv' style='grid-template-columns:repeat(${Math.min(12,Math.ceil(CAPI/4))},1fr)!important'>`;
+ ifl='';h+=`<div class='ivf'><b style='font-size:11.5px;flex:1;white-space:nowrap'>${S.inv.length}/${CAPI}</b><button title='Sortieren' onclick='sortInv()'>⇅</button><button onclick='storeWeak()'>📦 Einlagern</button><button onclick='sellWeak()'>💰 Verkaufen</button><button class='${asOn()?'on':''}' title='Ausrüstung automatisch verkaufen' onclick='asTog()'>🤖 Auto ${asOn()?'An':'Aus'}</button><button class='p' onclick="openM('base')">🏠 ${(S.lg||[]).length}</button></div><div class='inv' style='grid-template-columns:repeat(${Math.min(12,Math.ceil(CAPI/4))},1fr)!important'>`;
  for(let i=0;i<CAPI;i++){const g=S.inv[i];if(ifl&&(!g||g.t!==ifl))continue;h+=g?`<button class='it${sel&&sel.k===1&&sel.v===i?' sel':''}' style='border-color:${RAR[g.ri][1]}' onclick='pk(1,${i})'>${ico(g.t,24)}${better(g)?AR:''}${skB(g)}${g.u?`<small style='position:absolute;bottom:0;right:2px;color:#fff;font-size:9px'>+${g.u}</small>`:''}</button>`:`<div class='it'></div>`}
  h+='</div></div>';
  $('mb').innerHTML=h;invHero()}
@@ -2242,7 +2242,8 @@ const NEWS=[
   'Ausrüstung links (Helm, Amulett, Rüstung, Hose, Stiefel) und rechts (Waffe, Nebenhand, Umhang, Ringe)',
   'Dein Held ist in der Mitte viel größer zu sehen und bewegt sich',
   'Der 🎨 Aussehen-Knopf sitzt jetzt oben rechts am Heldenbild',
-  'Behoben: graue Kugeln auf den Schultern des Nekromagiers']},
+  'Die Filter-Knöpfe über dem Rucksack sind weg – alles ist auf einen Blick sichtbar',
+  'Behoben: graue Kugeln auf den Schultern und Zacken über der Kapuze des Nekromagiers']},
  {v:28,d:'31. Oktober',t:'Monster im neuen Stil',l:[
   'Alle Monster haben jetzt dunkle Umrisse und eine Licht-Schattierung – passend zum Nekromagier und den Karten',
   'Augen und Edelsteine der Monster glühen',
