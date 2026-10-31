@@ -75,7 +75,7 @@ button svg{display:block}
 #st3 #scur{border-color:#e0b64a;color:#ffe9a0}
 #nav{display:grid;grid-template-columns:1fr 1fr 1fr 82px 1fr 1fr 1fr;align-items:end;margin-top:auto;padding:0 2px env(safe-area-inset-bottom,0);background:linear-gradient(#2a251f,#12100d);border-top:3px solid #7a6f55}
 #nav .nv{min-height:62px;padding:4px 0 3px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:11px;background:none;border:0;box-shadow:none;border-radius:0;color:#cfc6b0}
-#orb{width:76px;height:76px;margin:-18px 3px 0;display:block;filter:drop-shadow(0 3px 5px #000)}
+#orb{width:76px;height:76px;margin:-18px 3px 0;display:block}
 /* ---------- Fenster ---------- */
 #modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:9;align-items:center;justify-content:center;padding:10px}
 #mp{position:relative;width:100%;max-width:440px;max-height:92dvh;overflow:auto;background:linear-gradient(#34322e,#201f1d);border:2px solid #6e675b;border-radius:4px;padding:12px;box-shadow:0 10px 30px #000}
@@ -1983,7 +1983,8 @@ function take(d){const p=G.p;
 function autoGear(){let ch=0;for(let i=S.inv.length-1;i>=0;i--){const g=S.inv[i],sl=slotFor(g),cur=S.gear[sl];if(!cur||sc(g)>sc(cur)){S.gear[sl]=g;S.inv.splice(i,1);if(cur)S.inv.push(cur);ch++}}if(ch){refresh();logsys('Bessere Ausrüstung angelegt','#3ddc5a')}}
 let lastD=0;
 function drawHeroEmb(){const e=$('emb');if(!e)return;const c=e.getContext('2d');c.setTransform(2,0,0,2,0,0);c.clearRect(0,0,58,58);hero(c,S.c,29,36,.98,false,0,1)}
-function orbc(){const c=$('orb').getContext('2d'),p=G.p;c.setTransform(2,0,0,2,0,0);c.clearRect(0,0,76,76);
+let _orbK='';function orbc(){const p=G.p,k=Math.round(p.hp/p.mhp*150)+'|'+Math.round(p.mp/p.mmp*150)+'|'+isR()+'|'+S.c;if(k===_orbK)return;_orbK=k;const c=$('orb').getContext('2d');c.setTransform(2,0,0,2,0,0);c.clearRect(0,0,76,76);
+ {const sg=c.createRadialGradient(38,40,30,38,40,38);sg.addColorStop(0,'rgba(0,0,0,.85)');sg.addColorStop(1,'rgba(0,0,0,0)');c.fillStyle=sg;c.beginPath();c.arc(38,40,38,0,7);c.fill()}
  c.save();c.beginPath();c.arc(38,38,31,0,7);c.clip();c.fillStyle='#17110f';c.fillRect(0,0,76,76);
  const hf=p.hp/p.mhp,mf=p.mp/p.mmp;
  c.fillStyle=lg(c,0,0,0,76,'#e0483a','#5a0d08');c.fillRect(7,69-62*hf,31,62*hf+8);
@@ -1992,10 +1993,13 @@ function orbc(){const c=$('orb').getContext('2d'),p=G.p;c.setTransform(2,0,0,2,0
  const g=c.createRadialGradient(28,26,2,38,38,34);g.addColorStop(0,'rgba(255,255,255,.35)');g.addColorStop(.4,'rgba(255,255,255,0)');g.addColorStop(1,'rgba(0,0,0,.4)');c.fillStyle=g;c.fillRect(0,0,76,76);c.restore();
  c.strokeStyle=lg(c,0,0,76,76,'#e6d6a0','#5a4a22');c.lineWidth=5;c.beginPath();c.arc(38,38,32,0,7);c.stroke();
  c.strokeStyle='#2a2216';c.lineWidth=1.5;c.beginPath();c.arc(38,38,35,0,7);c.stroke()}
+/* Oberfläche nur ändern, wenn sich etwas geändert hat – jede Text-Änderung zwingt Safari, die Leiste neu anzuordnen */
+const _HT={};function setT(id,v){v=String(v);if(_HT[id]===v)return;_HT[id]=v;const e=$(id);if(e)e.textContent=v}
+function setD(e,v){if(e&&e.style.display!==v)e.style.display=v}
 function hud(t){const p=G.p;
- $('dgb').style.display=G.dg?'':'none';$('top1').textContent=G.dg?dgName(G.dg)+' · Welle '+G.dg.w+(G.boss?' (Boss)':''):'Stufe '+S.stage+': '+zn(S.stage)+(G.boss?' (Boss)':'');$('gold').textContent=S.gold+(S.dia?'  💎'+S.dia:'')+(S.my?'  💠'+S.my:'');$('lvl').textContent='Lv '+S.lv+' · EP '+S.xp+'/'+need(S.lv);
- $('qh').textContent=S.pot.h;$('qm').textContent=S.pot.m;$('qm').parentNode.style.display=isR()?'none':'';$('prog').textContent=(G.dg?'':'')+Math.max(0,G.sp-G.en.length)+'/'+G.tot;{const a=$('s_prev'),b=$('s_next');if(a){const d=!!G.dg;a.style.display=d?'none':'';b.style.display=d?'none':'';a.disabled=S.stage<=1;b.disabled=S.stage>=S.max}}
- for(let i=0;i<4;i++){const k=CL[S.c].sk[i];$('sl'+i).textContent='Lv '+S.sk[i].l+' · '+(k.lc?Math.round(k.lc*100)+'% LP':mcost(k)+' '+RU());skT(i)}
+ setD($('dgb'),G.dg?'':'none');setT('top1',G.dg?dgName(G.dg)+' · Welle '+G.dg.w+(G.boss?' (Boss)':''):'Stufe '+S.stage+': '+zn(S.stage)+(G.boss?' (Boss)':''));setT('gold',S.gold+(S.dia?'  💎'+S.dia:'')+(S.my?'  💠'+S.my:''));setT('lvl','Lv '+S.lv+' · EP '+S.xp+'/'+need(S.lv));
+ setT('qh',S.pot.h);setT('qm',S.pot.m);setD($('qm').parentNode,isR()?'none':'');setT('prog',Math.max(0,G.sp-G.en.length)+'/'+G.tot);{const a=$('s_prev'),b=$('s_next');if(a){const d=!!G.dg;setD(a,d?'none':'');setD(b,d?'none':'');if(a.disabled!==(S.stage<=1))a.disabled=S.stage<=1;if(b.disabled!==(S.stage>=S.max))b.disabled=S.stage>=S.max}}
+ for(let i=0;i<4;i++){const k=CL[S.c].sk[i];setT('sl'+i,'Lv '+S.sk[i].l+' · '+(k.lc?Math.round(k.lc*100)+'% LP':mcost(k)+' '+RU()));skT(i)}
  bossUI();cabUI();if($('sacb')&&$('sacb').style.display!=='none')$('sacb').style.display='none';
  if(t-lastD>110){lastD=t;drawHeroEmb();orbc()}}
 let _sacS='';function sacUI(){const b=$('sacb');if(!b)return;const on=S.c==='n';if(b.style.display!==(on?'flex':'none'))b.style.display=on?'flex':'none';if(!on)return;const p=G.p,c=Math.max(0,p.sacCd||0),a=p.adT>0;const k=(c>0?Math.ceil(c):0)+'|'+a+'|'+Math.round(c/SACD*36);if(k===_sacS)return;_sacS=k;if(c>0){b.textContent=Math.ceil(c);b.style.fontSize='15px';b.style.color='#fff';b.style.background='conic-gradient(rgba(0,0,0,.8) '+Math.round(c/SACD*360)+'deg,rgba(150,20,40,.75) 0)'}else{b.textContent='🩸';b.style.fontSize='18px';b.style.color='';b.style.background=''}b.style.boxShadow=a?'0 0 12px #ff3a5a':''}
@@ -2254,6 +2258,10 @@ if(!$('tpb')){const b=document.createElement('button');b.id='tpb';b.setAttribute
 $('nav').innerHTML=[['h','Held',"openM('inv')"],['id','Dungeon',"openM('dungeon')"],['hm','Schmiede',"openM('forge')"],null,['is','Händler',"openM('shop')"],['it','Karte',"openM('tele')"],['im','Mehr','moreWin()']].map(b=>b?`<button class='nv' onclick="${b[2]}">${ico(b[0],32)}<span>${b[1]}</span></button>`:`<canvas id='orb' width='152' height='152'></canvas>`).join('');
 /* ---------- Was ist neu (Update-Hinweise) ---------- */
 const NEWS=[
+ {v:41,d:'31. Oktober',t:'Weniger Arbeit für die Leiste',l:[
+  'Die Lebens- und Mana-Kugel hatte einen Schattenfilter, den das iPhone bei jedem Neuzeichnen teuer berechnen musste – jetzt ist der Schatten direkt im Bild',
+  'Die Kugel wird nur noch neu gezeichnet, wenn sich Leben oder Mana ändern',
+  'Texte in der Leiste werden nur noch geändert, wenn sich wirklich etwas ändert']},
  {v:40,d:'31. Oktober',t:'Sicher-Modus',l:[
   'Wenn das Spiel auf deinem Handy hängt: Adresse mit ?safe=1 öffnen (z. B. ma-alx.github.io/Mystic/?safe=1)',
   'Dann läuft es mit niedriger Grafik, ohne Effekte, ohne WebGL-Figuren und ohne Ton – dein Spielstand bleibt gleich']},
