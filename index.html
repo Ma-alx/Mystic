@@ -2263,6 +2263,9 @@ if(!$('tpb')){const b=document.createElement('button');b.id='tpb';b.setAttribute
 $('nav').innerHTML=[['h','Held',"openM('inv')"],['id','Dungeon',"openM('dungeon')"],['hm','Schmiede',"openM('forge')"],null,['is','Händler',"openM('shop')"],['it','Karte',"openM('tele')"],['im','Mehr','moreWin()']].map(b=>b?`<button class='nv' onclick="${b[2]}">${ico(b[0],32)}<span>${b[1]}</span></button>`:`<canvas id='orb' width='152' height='152'></canvas>`).join('');
 /* ---------- Was ist neu (Update-Hinweise) ---------- */
 const NEWS=[
+ {v:46,d:'31. Oktober',t:'Figuren direkt im Grafikchip',l:[
+  'Vorbereitete Bilder von Monstern und Helden liegen auf dem Handy jetzt fest im Grafikchip und müssen nicht bei jedem Zeichnen neu übergeben werden',
+  'Das soll die langen Hänger im Dungeon mit vielen Gegnern und Dienern verhindern']},
  {v:45,d:'31. Oktober',t:'WebGL-Figuren auf dem Handy aus',l:[
   'Auf dem iPhone ging der WebGL-Grafikkontext immer wieder verloren – das verursachte Hänger von bis zu 15 Sekunden und ein verschobenes Spielfeld',
   'WebGL-Figuren sind auf dem Handy jetzt standardmäßig aus (in ⚙ einschaltbar)',
@@ -2562,12 +2565,12 @@ const BKS=MOB?1.25:2;              /* Auflösung der Monster-Bilder */
 const MPER=4*Math.PI*120;         /* Monster: 2 Schwing-Zyklen (ms) */
 function bkCanvas(w,h){const c=document.createElement('canvas');c.width=Math.max(1,Math.round(w));c.height=Math.max(1,Math.round(h));c.__v=1;return c}
 function bkWith(t,fn){const o=__TT;__TT=t;window.__BAKE=1;try{fn()}finally{__TT=o;window.__BAKE=0}}
-function bkFree(c){if(!c)return;try{if(typeof GLR!=='undefined'&&GLR.gl){const T0=GLR.tex.get(c);if(T0){GLR.gl.deleteTexture(T0.t);GLR.tex.delete(c)}}}catch(e){}c.width=1;c.height=1}
+function bkFree(c){if(!c)return;if(typeof c.close==='function'&&!(c instanceof HTMLCanvasElement)){try{c.close()}catch(e){}return}try{if(typeof GLR!=='undefined'&&GLR.gl){const T0=GLR.tex.get(c);if(T0){GLR.gl.deleteTexture(T0.t);GLR.tex.delete(c)}}}catch(e){}c.width=1;c.height=1}
 function bkGC(map,max){if(map.size<=max)return;const it=map.keys();while(map.size>max){const k=it.next().value;const v=map.get(k);if(v){(v.f||[]).forEach(bkFree);(v.i||[]).forEach(bkFree);(v.m||[]).forEach(bkFree);(v.a||[]).forEach(bkFree)}map.delete(k)}}
 /* --- Monster --- */
 function monBake(k,tint){const key=k+'|'+tint;let B=BK.mon.get(key);if(B){BK.mon.delete(key);BK.mon.set(key,B)}if(!B){B={f:new Array(BKN).fill(null),n:0};BK.mon.set(key,B);bkGC(BK.mon,MOB?12:24)}return B}
 function monFrame(B,k,tint,i){if(B.f[i])return B.f[i];const a=performance.now();const cv=bkCanvas(170*BKS,150*BKS),q=cv.getContext('2d');q.setTransform(BKS,0,0,BKS,0,0);
- bkWith(i*MPER/BKN,()=>mon0(q,k,85,105,1,1,tint,{},0));monStyle(cv,k);B.f[i]=cv;B.n++;BK.n++;BK.ms+=performance.now()-a;return cv}
+ bkWith(i*MPER/BKN,()=>mon0(q,k,85,105,1,1,tint,{},0));monStyle(cv,k);B.f[i]=cv;toBmp(cv,b=>{if(B.f[i]===cv){B.f[i]=b;cv.width=cv.height=1}else{try{b.close()}catch(e){}}});B.n++;BK.n++;BK.ms+=performance.now()-a;return cv}
 /* Mal-Filter für Monster: Schattierung, Lichtkante, dunkler Umriss (einmal pro gespeichertem Bild) */
 let MST=null;function monStyle(cv,mk){if(CPUALL||LITE||ALT.includes('m'))return;try{const w=cv.width,h=cv.height;if(!MST||MST[0].width!==w||MST[0].height!==h){MST=[0,1].map(()=>bkCanvas(w,h))}const[A,R]=MST,a=A.getContext('2d'),r=R.getContext('2d'),q=cv.getContext('2d'),k=w/170;
  a.setTransform(1,0,0,1,0,0);a.globalCompositeOperation='copy';a.globalAlpha=1;a.drawImage(cv,0,0);
@@ -2590,7 +2593,7 @@ function heroFrame(H,k,D,st,i){const arr=H[st];if(arr[i])return arr[i];const a0=
  const mv=st==='m',aa=st==='a'?[.92,.7,.45,.2][i]:0,per=st==='m'?2*Math.PI*105:2*Math.PI*420,t=st==='a'?0:i*per/BKH;
  const cv=bkCanvas(150*D,140*D),q=cv.getContext('2d');q.setTransform(D,0,0,D,0,0);
  bkWith(t,()=>lit(q,'h'+D+k,150,140,75,100,D,75,100,1,1,null,(oc,ox,oy)=>{heroRaw(oc,k,ox,oy,1,mv,aa,1);const ns=k==='n'&&nSpr();if(!ns){offHand(oc,k,ox,oy,mv,aa);gearSil(oc,k,ox,oy)}gearFx(oc,k,ox,oy,mv,ns)}));
- arr[i]=cv;H.n++;BK.n++;BK.ms+=performance.now()-a0;return cv}
+ arr[i]=cv;toBmp(cv,b=>{if(arr[i]===cv){arr[i]=b;cv.width=cv.height=1}else{try{b.close()}catch(e){}}});H.n++;BK.n++;BK.ms+=performance.now()-a0;return cv}
 function heroPick(H,st,i){const arr=H[st],n=arr.length;if(arr[i])return arr[i];for(let d=1;d<n;d++){const a=arr[(i+d)%n];if(a)return a;const b=arr[(i-d+n)%n];if(b)return b}for(const s2 of ['i','m','a'])for(const c of H[s2])if(c)return c;return null}
 function heroImg(k,D,mv,a){const inGame=typeof S!=='undefined'&&S&&S.c===k&&$('game').style.display!=='none';if(!inGame){const H=heroBake(k,D,true);return H.i[0]||heroFrame(H,k,D,'i',0)}const sg=gearSig();if(sg!==BK.sig){for(const [key,v] of [...BK.hero]){if(!key.endsWith('|still')){['i','m','a'].forEach(q=>(v[q]||[]).forEach(bkFree));BK.hero.delete(key)}}BK.sig=sg}const H=heroBake(k,D,false),now=Date.now();let st,i;
  if(a>.05){st='a';i=a>.8?0:a>.57?1:a>.32?2:3}else if(mv){st='m';i=Math.floor((now%(2*Math.PI*105))/(2*Math.PI*105)*BKH)}else{st='i';i=Math.floor((now%(2*Math.PI*420))/(2*Math.PI*420)*BKH)}
