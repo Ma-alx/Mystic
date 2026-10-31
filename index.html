@@ -579,7 +579,7 @@ function bg(zi){
   x.globalCompositeOperation='lighter';x.globalAlpha=1;for(let i=0;i<4;i++){const bx=r()*W,by=r()*H,br=70+r()*90;x.fillStyle=rg(x,bx,by,br,mixc(ZC,'#ffe8b0',.35),'rgba(0,0,0,0)');x.globalAlpha=.1;x.fillRect(bx-br,by-br,br*2,br*2)}x.restore()}
  x.save();x.globalCompositeOperation='lighter';for(let i=0;i<22;i++){const bx=r()*W,by=r()*H,br=18+r()*40;x.fillStyle=rg(x,bx,by,br,'rgba(255,226,160,'+(.05+r()*.06)+')','rgba(255,220,150,0)');x.save();x.translate(bx,by);x.scale(1,.6);x.fillRect(-br,-br,br*2,br*2);x.restore()}x.restore();
  {const vg=x.createRadialGradient(W/2,H*.48,Math.min(W,H)*.35,W/2,H*.48,Math.max(W,H)*.75);vg.addColorStop(0,'rgba(0,0,0,0)');vg.addColorStop(1,'rgba(0,0,0,.28)');x.fillStyle=vg;x.fillRect(0,0,W,H)}
- BGC[zi]={c,tp:TP};{const ks=Object.keys(BGC);while(ks.length>3){const o=ks.shift();if(+o!==zi&&BGC[o]){try{BGC[o].c.width=1;BGC[o].c.height=1}catch(e){}delete BGC[o]}}}
+ BGC[zi]={c,tp:TP};{const ks=Object.keys(BGC);while(ks.length>3){const o=ks.shift();if(+o!==zi&&BGC[o]){try{BGC[o].c.width=1;BGC[o].c.height=1;if(BGC[o].s){BGC[o].s.width=1;BGC[o].s.height=1}if(BGC[o].sb)BGC[o].sb.close()}catch(e){}delete BGC[o]}}}
  return BGC[zi]}
 /* ---------- Figuren ---------- */
 const ol=(c,x1,y1,x2,y2,w,col)=>{ln(c,x1,y1,x2,y2,'rgba(0,0,0,.65)',w+1.6);ln(c,x1,y1,x2,y2,col,w)};
@@ -602,7 +602,9 @@ function skinT(){try{const i=(S.skin||0);return SKN[S.c][i][1]}catch(e){return n
 function gcol(sl,k){const r=gcol0(sl,k),t=skinT();return t?mixc(r,t,.36):r}
 function gcol0(sl,k){const base=GCOL[k][sl==='a'?'ch':sl==='p'?'pn':sl==='b'?'bt':sl==='h'?'hm':sl==='c'?'cl':'wp'];
  if(typeof S==='undefined'||!S||!S.gear)return base;const g=S.gear[sl];if(!g)return mixc(base,'#7a7264',.62);return mixc(base,RAR[g.ri][1],.62)}
-let GHC=[];function nGlow(){const t=skinT();if(!t)return['80,240,230','#50f0e6'];const h=mixc(t,'#ffffff',.38),v=hx(h);return[v.join(','),h]}
+let GHC=[];/* Zwischenbild in ein ImageBitmap umwandeln: Auf dem Handy liegen Canvas-Zwischenbilder im Hauptspeicher und werden bei jeder Zeichnung komplett kopiert */
+function toBmp(cv,cb){try{if(window.createImageBitmap&&MOB)createImageBitmap(cv).then(cb,()=>{})}catch(e){}}
+function nGlow(){const t=skinT();if(!t)return['80,240,230','#50f0e6'];const h=mixc(t,'#ffffff',.38),v=hx(h);return[v.join(','),h]}
 function necroVec(c,x,y,s,mv,a,fl){
  const t=T(),ph=t/(mv?105:420),sw=mv?Math.sin(ph)*4.2:0,bob=Math.sin(t/520)*1.6+(mv?Math.sin(ph*2)*.6:0);a=a||0;const ease=q=>q*q*(3-2*q);
  const RB=gcol('c','n'),AR=gcol('a','n'),HM=gcol('h','n'),WP=gcol('w','n'),MT='#56536a',BN='#e4dcc6',TRIM='#d2c08a',INK='#0b0614',[GL]=nGlow();
@@ -710,7 +712,7 @@ const NIMG=new Image(),NSK={};NIMG.onload=()=>{try{for(const k in NSK)delete NSK
 function nSpr(){const t=skinT(),key=t||'0';if(NSK[key])return NSK[key];if(!NIMG.complete||!NIMG.naturalWidth)return null;if(!t)return NSK[key]=NIMG;
  /* Skin-Farbe per Farbton-Überblendung (kein Zurücklesen von Bildpunkten – das ist auf manchen iPhones extrem langsam) */
  try{const cv=document.createElement('canvas');cv.width=NIMG.naturalWidth;cv.height=NIMG.naturalHeight;const q=cv.getContext('2d');q.drawImage(NIMG,0,0);
-  q.globalCompositeOperation='hue';q.fillStyle=t;q.fillRect(0,0,cv.width,cv.height);q.globalCompositeOperation='destination-in';q.drawImage(NIMG,0,0);q.globalCompositeOperation='source-over';return NSK[key]=cv}catch(e){return NSK[key]=NIMG}}
+  q.globalCompositeOperation='hue';q.fillStyle=t;q.fillRect(0,0,cv.width,cv.height);q.globalCompositeOperation='destination-in';q.drawImage(NIMG,0,0);q.globalCompositeOperation='source-over';NSK[key]=cv;toBmp(cv,b=>{if(NSK[key]===cv){NSK[key]=b;cv.width=cv.height=1}});return cv}catch(e){return NSK[key]=NIMG}}
 function necroRaw(c,x,y,s,mv,a,fl){const im=nSpr();if(!im)return necroVec(c,x,y,s,mv,a,fl);
  const t=T(),ph=t/(mv?105:420),sw=mv?Math.sin(ph)*4.2:0,bob=Math.sin(t/520)*1.6+(mv?Math.sin(ph*2)*.6:0);a=a||0;const [GL]=nGlow();
  const u=1-a,ap=a>0?Math.sin(Math.min(1,u)*Math.PI):0,fk=.78+Math.sin(t/110)*.16,br=Math.sin(t/700);
@@ -1759,7 +1761,7 @@ let _mq=2;function mon(c,k,x,y,s,fl,tint,u){if(!u||!u.mhp||!u.fh&&u.fh!==0)retur
 function draw(){_mq=MOB?1:2;
  cx.save();if(G.sh>0)cx.translate((Math.random()-.5)*G.sh*14,(Math.random()-.5)*G.sh*14);
  const zi=G.dg?dzi():(S.stage-1)%20,z=ZT[zi],B=bg(zi),p=G.p;
- cx.globalAlpha=1;if(SW){if(!B.s){const sc=document.createElement('canvas');sc.width=B.c.width;sc.height=B.c.height;const q=sc.getContext('2d');q.drawImage(B.c,0,0);q.globalCompositeOperation='overlay';q.globalAlpha=.75;q.drawImage(B.c,0,0);q.globalCompositeOperation='soft-light';q.globalAlpha=.22;q.fillStyle='#fff';q.fillRect(0,0,sc.width,sc.height);q.globalCompositeOperation='screen';q.globalAlpha=.06;q.fillStyle='#6a8ad0';q.fillRect(0,0,sc.width,sc.height);B.s=sc}cx.drawImage(B.s,0,0,W,H)}else cx.drawImage(B.c,0,0,W,H);cx.textAlign='center';cx.textBaseline='middle';
+ cx.globalAlpha=1;if(SW){if(!B.s){const sc=document.createElement('canvas');sc.width=B.c.width;sc.height=B.c.height;const q=sc.getContext('2d');q.drawImage(B.c,0,0);q.globalCompositeOperation='overlay';q.globalAlpha=.75;q.drawImage(B.c,0,0);q.globalCompositeOperation='soft-light';q.globalAlpha=.22;q.fillStyle='#fff';q.fillRect(0,0,sc.width,sc.height);q.globalCompositeOperation='screen';q.globalAlpha=.06;q.fillStyle='#6a8ad0';q.fillRect(0,0,sc.width,sc.height);B.s=sc;toBmp(sc,b=>{if(B.s===sc){B.sb=b}else{try{b.close()}catch(e){}}})}cx.drawImage(B.sb||B.s,0,0,W,H)}else cx.drawImage(B.c,0,0,W,H);cx.textAlign='center';cx.textBaseline='middle';
  for(const b of G.bl){cx.globalAlpha=b.a;cx.fillStyle='#5a0d0a';cx.beginPath();cx.ellipse(b.x,b.y,b.r,b.r*.6,b.q,0,7);cx.fill()}cx.globalAlpha=1;
  cx.globalCompositeOperation='lighter';
  for(const q of B.tp){const f=.75+Math.sin(T()/80+q[0])*.15+Math.sin(T()/137+q[1])*.1,g=cx.createRadialGradient(q[0],q[1],2,q[0],q[1],60*f);g.addColorStop(0,'rgba(255,170,70,.45)');g.addColorStop(1,'rgba(255,100,20,0)');cx.fillStyle=g;cx.fillRect(q[0]-70,q[1]-70,140,140);el(cx,q[0],q[1]-2,3*f,6*f,'#ffcf6a')}
@@ -2240,6 +2242,9 @@ if(!$('tpb')){const b=document.createElement('button');b.id='tpb';b.setAttribute
 $('nav').innerHTML=[['h','Held',"openM('inv')"],['id','Dungeon',"openM('dungeon')"],['hm','Schmiede',"openM('forge')"],null,['is','Händler',"openM('shop')"],['it','Karte',"openM('tele')"],['im','Mehr','moreWin()']].map(b=>b?`<button class='nv' onclick="${b[2]}">${ico(b[0],32)}<span>${b[1]}</span></button>`:`<canvas id='orb' width='152' height='152'></canvas>`).join('');
 /* ---------- Was ist neu (Update-Hinweise) ---------- */
 const NEWS=[
+ {v:35,d:'31. Oktober',t:'Weniger Arbeit für das Handy',l:[
+  'Nekromagier mit Skin und Kartenhintergrund liegen jetzt direkt im Grafikchip – das spart pro Bild sehr viel Kopierarbeit',
+  'Alte Hintergründe werden vollständig freigegeben']},
  {v:34,d:'31. Oktober',t:'Notfall-Grafik schaltet sich nicht mehr selbst ein',l:[
   'Behoben: Nach einem Hänger blieb die Notfall-Grafik auf dem iPhone an – dadurch hing das Spiel immer wieder',
   'Bei Rucklern schaltet das Spiel jetzt nur noch auf Sparmodus und dezente Effekte',
