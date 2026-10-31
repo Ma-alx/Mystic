@@ -1763,7 +1763,7 @@ let _mq=2;function mon(c,k,x,y,s,fl,tint,u){if(!u||!u.mhp||!u.fh&&u.fh!==0)retur
 function draw(){_mq=MOB?1:2;
  cx.save();if(G.sh>0)cx.translate((Math.random()-.5)*G.sh*14,(Math.random()-.5)*G.sh*14);
  const zi=G.dg?dzi():(S.stage-1)%20,z=ZT[zi],B=bg(zi),p=G.p;
- cx.globalAlpha=1;if(SW){if(!B.s){const sc=document.createElement('canvas');sc.width=B.c.width;sc.height=B.c.height;const q=sc.getContext('2d');q.drawImage(B.c,0,0);q.globalCompositeOperation='overlay';q.globalAlpha=.75;q.drawImage(B.c,0,0);q.globalCompositeOperation='soft-light';q.globalAlpha=.22;q.fillStyle='#fff';q.fillRect(0,0,sc.width,sc.height);q.globalCompositeOperation='screen';q.globalAlpha=.06;q.fillStyle='#6a8ad0';q.fillRect(0,0,sc.width,sc.height);B.s=sc;toBmp(sc,b=>{if(B.s===sc){B.sb=b}else{try{b.close()}catch(e){}}})}cx.drawImage(B.sb||B.s,0,0,W,H)}else cx.drawImage(B.c,0,0,W,H);cx.textAlign='center';cx.textBaseline='middle';
+ cx.globalAlpha=1;if(SW){if(!B.s){const sc=document.createElement('canvas');sc.width=B.c.width;sc.height=B.c.height;const q=sc.getContext('2d');q.drawImage(B.c,0,0);q.globalCompositeOperation='overlay';q.globalAlpha=.75;q.drawImage(B.c,0,0);q.globalCompositeOperation='soft-light';q.globalAlpha=.22;q.fillStyle='#fff';q.fillRect(0,0,sc.width,sc.height);q.globalCompositeOperation='screen';q.globalAlpha=.06;q.fillStyle='#6a8ad0';q.fillRect(0,0,sc.width,sc.height);if(MOB){q.globalCompositeOperation='soft-light';q.globalAlpha=.55;const cg=q.createLinearGradient(0,0,0,sc.height);cg.addColorStop(0,'#7fb4ff');cg.addColorStop(.55,'#fff0d0');cg.addColorStop(1,'#ffb070');q.fillStyle=cg;q.fillRect(0,0,sc.width,sc.height)}B.s=sc;toBmp(sc,b=>{if(B.s===sc){B.sb=b}else{try{b.close()}catch(e){}}})}cx.drawImage(B.sb||B.s,0,0,W,H)}else cx.drawImage(B.c,0,0,W,H);cx.textAlign='center';cx.textBaseline='middle';
  for(const b of G.bl){cx.globalAlpha=b.a;cx.fillStyle='#5a0d0a';cx.beginPath();cx.ellipse(b.x,b.y,b.r,b.r*.6,b.q,0,7);cx.fill()}cx.globalAlpha=1;
  cx.globalCompositeOperation='lighter';
  for(const q of B.tp){const f=.75+Math.sin(T()/80+q[0])*.15+Math.sin(T()/137+q[1])*.1,g=cx.createRadialGradient(q[0],q[1],2,q[0],q[1],60*f);g.addColorStop(0,'rgba(255,170,70,.45)');g.addColorStop(1,'rgba(255,100,20,0)');cx.fillStyle=g;cx.fillRect(q[0]-70,q[1]-70,140,140);el(cx,q[0],q[1]-2,3*f,6*f,'#ffcf6a')}
@@ -1817,13 +1817,13 @@ function draw(){_mq=MOB?1:2;
   cx.globalCompositeOperation='lighter';for(const q of G.am){q.ph+=.03;q.y+=(am[1]===1?-q.v:am[1]===3?q.v*.8:Math.sin(q.ph)*.25)*.016;q.x+=Math.sin(q.ph)*.35;if(q.y<-4)q.y=H+4;if(q.y>H+4)q.y=-4;
    cx.globalAlpha=am[1]===2?.35+Math.sin(q.ph*3)*.35:.45;cx.fillStyle=am[0];cx.beginPath();cx.arc(q.x,q.y,q.r,0,7);cx.fill()}cx.globalCompositeOperation='source-over';cx.globalAlpha=1}
  const x1=(T()/60)%(W+300)-150,x2=W-((T()/85)%(W+300))+150;
- [[x1,H*.3],[x2,H*.62]].forEach(q=>{const g=cx.createRadialGradient(q[0],q[1],10,q[0],q[1],170);g.addColorStop(0,z[4]);g.addColorStop(1,'rgba(0,0,0,0)');cx.fillStyle=g;cx.fillRect(0,0,W,H)});
+ [[x1,H*.3],[x2,H*.62]].forEach(q=>{const g=cx.createRadialGradient(q[0],q[1],10,q[0],q[1],170);g.addColorStop(0,z[4]);g.addColorStop(1,'rgba(0,0,0,0)');cx.fillStyle=g;cx.fillRect(q[0]-170,q[1]-170,340,340)});
  const lr=380+Math.sin(T()/130)*8,lgr=cx.createRadialGradient(p.x,p.y,40,p.x,p.y,lr);lgr.addColorStop(0,'rgba(255,170,80,.14)');lgr.addColorStop(.55,SW?'rgba(10,20,60,.02)':'rgba(0,0,0,.14)');lgr.addColorStop(1,SW?'rgba(10,20,70,.24)':'rgba(0,0,0,.52)');cx.fillStyle=lgr;cx.fillRect(0,0,W,H);
  if(!LOW){cx.save();cx.globalCompositeOperation='lighter';for(let i=0;i<3;i++){const x0=((T()/110+i*W/3)%(W+260))-130,g=cx.createLinearGradient(x0,0,x0-90,H);g.addColorStop(0,G.dg?'rgba(255,160,80,.05)':'rgba(255,236,190,.07)');g.addColorStop(1,'rgba(255,236,190,0)');cx.fillStyle=g;cx.beginPath();cx.moveTo(x0,0);cx.lineTo(x0+46,0);cx.lineTo(x0-60,H);cx.lineTo(x0-130,H);cx.fill()}cx.restore();
   if(!NZ){NZ=document.createElement('canvas');NZ.width=NZ.height=128;const n=NZ.getContext('2d'),im=n.createImageData(128,128);for(let i=0;i<im.data.length;i+=4){const v=Math.random()*255;im.data[i]=im.data[i+1]=im.data[i+2]=v;im.data[i+3]=255}n.putImageData(im,0,0)}
-  cx.save();cx.globalAlpha=SW?0:.07;cx.globalCompositeOperation='overlay';const ox=-Math.floor(Math.random()*128),oy=-Math.floor(Math.random()*128);for(let x=ox;x<W;x+=128)for(let y=oy;y<H;y+=128)cx.drawImage(NZ,x,y);cx.restore();
-  cx.save();cx.globalCompositeOperation='saturation';cx.globalAlpha=SW?.1:.12;cx.fillStyle=SW?'#ff2a40':'#808080';cx.fillRect(0,0,W,H);cx.restore();
-  cx.save();cx.globalCompositeOperation='soft-light';cx.globalAlpha=SW?.55:.35;const cg=cx.createLinearGradient(0,0,0,H);cg.addColorStop(0,SW?'#7fb4ff':'#6a7fa8');cg.addColorStop(.55,SW?'#fff0d0':'#d8c8a8');cg.addColorStop(1,SW?'#ffb070':'#a8602a');cx.fillStyle=cg;cx.fillRect(0,0,W,H);cx.restore()}
+  if(!SW){cx.save();cx.globalAlpha=.07;cx.globalCompositeOperation='overlay';const ox=-Math.floor(Math.random()*128),oy=-Math.floor(Math.random()*128);for(let x=ox;x<W;x+=128)for(let y=oy;y<H;y+=128)cx.drawImage(NZ,x,y);cx.restore()}
+  if(!MOB){cx.save();cx.globalCompositeOperation='saturation';cx.globalAlpha=SW?.1:.12;cx.fillStyle=SW?'#ff2a40':'#808080';cx.fillRect(0,0,W,H);cx.restore()}
+  if(!(MOB&&SW)){cx.save();cx.globalCompositeOperation='soft-light';cx.globalAlpha=SW?.55:.35;const cg=cx.createLinearGradient(0,0,0,H);cg.addColorStop(0,SW?'#7fb4ff':'#6a7fa8');cg.addColorStop(.55,SW?'#fff0d0':'#d8c8a8');cg.addColorStop(1,SW?'#ffb070':'#a8602a');cx.fillStyle=cg;cx.fillRect(0,0,W,H);cx.restore()}}
  for(const q of G.pop){cx.globalAlpha=Math.min(1,q.l*1.5);txt(q.t,q.x,q.y,Math.round(19*(1+Math.max(0,q.l-.84)*3.2)),q.c);cx.globalAlpha=1}
  if(G.ban>0){cx.globalAlpha=Math.min(1,G.ban);txt(G.dg?'Dungeon · Welle '+G.dg.w:zn(S.stage),W/2,60,27,'#e8d8a8');txt('Stufe '+S.stage,W/2,88,17,'#cfc6b0');if(G.mod)txt('⚡ '+G.mod.n,W/2,112,16,'#ffb070');cx.globalAlpha=1}
  if(G.clear>0)txt(G.dg?'Welle geschafft!':'Stufe geschafft!',W/2,H/2,30,'#ffd23f');
@@ -1876,7 +1876,7 @@ function upg(s){const g=S.gear[s],c=uc(g);if(S.gold<c||(g.u||0)>=upMax(g)||(S.my
 const keepOn=()=>!S||S.keep!==false;
 const asOn=()=>!!S&&S.asell!==false;
 function asKeep(g){return keepOn()&&(g.un||g.st)}
-function asTog(){S.asell=!asOn();save();if(modal)rm();try{if($('modal2').style.display==='flex'&&$('mb2').innerHTML.indexOf('Einstellungen')>0)cogWin()}catch(e){}}
+function asTog(){if(!S)return;S.asell=!asOn();save();if(modal)rm();try{if($('modal2').style.display==='flex'&&$('mb2').innerHTML.indexOf('Einstellungen')>0)cogWin()}catch(e){}}
 function sellWeak(){S.inv=S.inv.filter(g=>{if(!better(g)&&!(keepOn()&&(g.un||g.st))){retG(g);S.gold+=sv(g);return false}return true});sel=null;save();rm()}
 const DP=[1,2,4,8,14,24,40];
 const TRN=[['dmg','Kampftraining','+2% Schaden'],['hp','Ausdauer','+2% Leben'],['crit','Präzision','+0,3% Krit-Chance'],['gold','Handel','+2% Gold-Funde']],trC=l=>Math.round(400*Math.pow(1.3,l));
@@ -2244,6 +2244,11 @@ if(!$('tpb')){const b=document.createElement('button');b.id='tpb';b.setAttribute
 $('nav').innerHTML=[['h','Held',"openM('inv')"],['id','Dungeon',"openM('dungeon')"],['hm','Schmiede',"openM('forge')"],null,['is','Händler',"openM('shop')"],['it','Karte',"openM('tele')"],['im','Mehr','moreWin()']].map(b=>b?`<button class='nv' onclick="${b[2]}">${ico(b[0],32)}<span>${b[1]}</span></button>`:`<canvas id='orb' width='152' height='152'></canvas>`).join('');
 /* ---------- Was ist neu (Update-Hinweise) ---------- */
 const NEWS=[
+ {v:36,d:'31. Oktober',t:'Hintergrund viel schneller',l:[
+  'Der Hintergrund kostete auf dem iPhone fast die gesamte Rechenzeit – jetzt deutlich weniger',
+  'Eine unsichtbare Rausch-Schicht wird nicht mehr gezeichnet, Nebelschwaden füllen nur noch ihren Bereich',
+  'Auf dem Handy wird die Farbstimmung einmal in den Hintergrund eingebacken statt jedes Bild neu berechnet',
+  'Behoben: Fehler beim Antippen von „Auto-Verkauf“ im Hauptmenü']},
  {v:35,d:'31. Oktober',t:'Weniger Arbeit für das Handy',l:[
   'Nekromagier mit Skin und Kartenhintergrund liegen jetzt direkt im Grafikchip – das spart pro Bild sehr viel Kopierarbeit',
   'Alte Hintergründe werden vollständig freigegeben']},
