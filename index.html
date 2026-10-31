@@ -2263,6 +2263,10 @@ if(!$('tpb')){const b=document.createElement('button');b.id='tpb';b.setAttribute
 $('nav').innerHTML=[['h','Held',"openM('inv')"],['id','Dungeon',"openM('dungeon')"],['hm','Schmiede',"openM('forge')"],null,['is','Händler',"openM('shop')"],['it','Karte',"openM('tele')"],['im','Mehr','moreWin()']].map(b=>b?`<button class='nv' onclick="${b[2]}">${ico(b[0],32)}<span>${b[1]}</span></button>`:`<canvas id='orb' width='152' height='152'></canvas>`).join('');
 /* ---------- Was ist neu (Update-Hinweise) ---------- */
 const NEWS=[
+ {v:45,d:'31. Oktober',t:'WebGL-Figuren auf dem Handy aus',l:[
+  'Auf dem iPhone ging der WebGL-Grafikkontext immer wieder verloren – das verursachte Hänger von bis zu 15 Sekunden und ein verschobenes Spielfeld',
+  'WebGL-Figuren sind auf dem Handy jetzt standardmäßig aus (in ⚙ einschaltbar)',
+  'Geht der Kontext trotzdem verloren, zeichnet das Spiel sofort wieder richtig weiter']},
  {v:44,d:'31. Oktober',t:'Spiel läuft im eigenen Takt weiter',l:[
   'Hört Safari auf dem iPhone auf, das Spiel zum Zeichnen aufzurufen, zeichnet das Spiel jetzt selbst mit etwa 30 Bildern pro Sekunde weiter',
   'Vorher lief es in solchen Momenten nur mit einem Bild pro Sekunde']},
@@ -2599,7 +2603,7 @@ function heroBlit(c,k,D,s,fl,mv,a){const img=heroImg(k,D,mv,a);if(!img)return;c.
 /* Boden (Hintergrund, Schatten) -> 2D-Canvas unten, Figuren -> WebGL in der Mitte, Effekte/Texte -> 2D-Canvas oben */
 const GLR={on:false,cap:false,gl:null,cv:null,ov:null,ox:null,q:[],tex:new Map(),prog:null,buf:null,loc:null,n:0,fail:''};
 var _G0=null;
-function glInit(){try{if(CPUALL||GLR.cv)return;try{if(SAFE||localStorage.getItem('wa_gl')==='0'){GLR.fail=SAFE?'Sicher-Modus':'ausgeschaltet';return}}catch(e){}_G0=cx;const a=$('arena');const g=document.createElement('canvas'),o=document.createElement('canvas');g.id='glc';o.id='ovc';
+function glInit(){try{if(CPUALL||GLR.cv)return;try{if(MOB&&!localStorage.getItem('wa_r6')){localStorage.setItem('wa_r6','1');localStorage.setItem('wa_gl','0')}if(SAFE||localStorage.getItem('wa_gl')==='0'||(MOB&&localStorage.getItem('wa_gl')!=='1')){GLR.fail=SAFE?'Sicher-Modus':'ausgeschaltet';return}}catch(e){}_G0=cx;const a=$('arena');const g=document.createElement('canvas'),o=document.createElement('canvas');g.id='glc';o.id='ovc';
  for(const c of [g,o]){c.style.cssText='position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;border:0;box-shadow:none'}
  g.style.zIndex='1';o.style.zIndex='2';a.insertBefore(g,cv.nextSibling);a.insertBefore(o,g.nextSibling);
  const gl=g.getContext('webgl',{alpha:true,premultipliedAlpha:true,antialias:false,depth:false,stencil:false,preserveDrawingBuffer:false})||g.getContext('experimental-webgl');
@@ -2612,7 +2616,7 @@ function glInit(){try{if(CPUALL||GLR.cv)return;try{if(SAFE||localStorage.getItem
  gl.enableVertexAttribArray(GLR.loc.p);gl.enableVertexAttribArray(GLR.loc.t);gl.enableVertexAttribArray(GLR.loc.a);
  gl.vertexAttribPointer(GLR.loc.p,2,gl.FLOAT,false,20,0);gl.vertexAttribPointer(GLR.loc.t,2,gl.FLOAT,false,20,8);gl.vertexAttribPointer(GLR.loc.a,1,gl.FLOAT,false,20,16);
  gl.enable(gl.BLEND);gl.blendFunc(gl.ONE,gl.ONE_MINUS_SRC_ALPHA);gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL,true);
- g.addEventListener('webglcontextlost',e=>{e.preventDefault();GLR.on=false;GLR.fail='Kontext verloren';try{g.style.display='none';o.style.display='none'}catch(x){}});
+ g.addEventListener('webglcontextlost',e=>{e.preventDefault();GLR.on=false;GLR.cap=false;GLR.q=[];GLR.fail='Kontext verloren';try{if(_G0){cx=_G0;cx.setTransform(Q,0,0,Q,0,0);cx.globalAlpha=1;cx.globalCompositeOperation='source-over'}}catch(x){}try{g.style.display='none';o.style.display='none'}catch(x){}});
  GLR.gl=gl;GLR.cv=g;GLR.ov=o;GLR.ox=o.getContext('2d');GLR.prog=p;GLR.on=true;glSize();
  /* Farb-Nachbearbeitung (Sättigung, Weichlicht …) braucht den Untergrund: auf die Bodenebene umleiten */
  const ox=GLR.ox,OK=new Set(['source-over','lighter']);for(const fn of ['fillRect','drawImage']){const f0=ox[fn].bind(ox);ox[fn]=function(){if(OK.has(ox.globalCompositeOperation))return f0.apply(null,arguments);const g0=_G0;g0.save();g0.setTransform(ox.getTransform());g0.globalAlpha=ox.globalAlpha;g0.globalCompositeOperation=ox.globalCompositeOperation;g0.fillStyle=ox.fillStyle;try{g0[fn].apply(g0,arguments)}finally{g0.restore()}}}
