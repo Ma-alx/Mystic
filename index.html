@@ -2062,7 +2062,9 @@ function hud(t){const p=G.p;
  if(t-lastD>110){lastD=t;drawHeroEmb();orbc()}}
 let _sacS='';function sacUI(){const b=$('sacb');if(!b)return;const on=S.c==='n';if(b.style.display!==(on?'flex':'none'))b.style.display=on?'flex':'none';if(!on)return;const p=G.p,c=Math.max(0,p.sacCd||0),a=p.adT>0;const k=(c>0?Math.ceil(c):0)+'|'+a+'|'+Math.round(c/SACD*36);if(k===_sacS)return;_sacS=k;if(c>0){b.textContent=Math.ceil(c);b.style.fontSize='15px';b.style.color='#fff';b.style.background='conic-gradient(rgba(0,0,0,.8) '+Math.round(c/SACD*360)+'deg,rgba(150,20,40,.75) 0)'}else{b.textContent='🩸';b.style.fontSize='18px';b.style.color='';b.style.background=''}b.style.boxShadow=a?'0 0 12px #ff3a5a':''}
 addEventListener('resize',fit);if(window.ResizeObserver)new ResizeObserver(fit).observe($('arena'));
-let _ld=0,_fe=16,_slow=0,LITE=CPUALL||SAFE;if(CPUALL){try{document.documentElement.classList.add('lite')}catch(e){}}const _M2=document.getElementById('modal2');let _shS=null;function shOff(on){try{if(on)Object.defineProperty(cx,'shadowBlur',{configurable:true,get(){return 0},set(v){}});else delete cx.shadowBlur}catch(e){}}
+let _ld=0,_fe=16,_slow=0,LITE=CPUALL||SAFE;if(CPUALL){try{document.documentElement.classList.add('lite')}catch(e){}}const _M2=document.getElementById('modal2');let _shS=null;/* Leuchtschatten (shadowBlur) für alle Zeichenflächen abschaltbar – nicht nur für eine; auf dem Handy immer aus (sehr teuer in Safari) */
+(()=>{try{const P=CanvasRenderingContext2D.prototype,d=Object.getOwnPropertyDescriptor(P,'shadowBlur');Object.defineProperty(P,'shadowBlur',{configurable:true,get(){return window.__NOSH?0:d.get.call(this)},set(v){d.set.call(this,window.__NOSH?0:v)}})}catch(e){}})();
+function shOff(on){window.__NOSH=!!on;try{for(const c of [cx,_G0,GLR&&GLR.ox])if(c)c.shadowBlur=0}catch(e){}}
 let _s2=0;function autoQ(){try{if(sessionStorage.getItem('wa_ad'))return;sessionStorage.setItem('wa_ad','1');try{save()}catch(e){}localStorage.setItem('wa_q',QL==='h'?'m':'l');location.reload()}catch(e){}}
 let _ev='',_evA=0;function evT(n){_ev=n;_evA=performance.now()}let _tu=0,_td=0,_th=0;const STL=[];let _stN=0,_vh=0,_stT=0,_stTot=0,_stWin=0;try{document.addEventListener('visibilitychange',()=>{_vh=performance.now()})}catch(e){}
 let _lastF=0,_wdA=0,_tdA=0,_tdS=0;function loop(t,_fw){_lastF=performance.now();if(AN.on)AN.fr++;if(!_fw)_wdA=0;const _real=t-lt,raw=Math.min(400,_real),dt=Math.min(.05,raw/1000);lt=t;_fe+=(raw-_fe)*.05;_stN=Math.max(0,_stN-dt*.4);if(_real>2000&&!CPUALL&&!document.hidden&&t-_vh>2000){try{if(!sessionStorage.getItem('wa_cpu_try')){sessionStorage.setItem('wa_cpu_try','1');try{localStorage.setItem('wa_fx','d')}catch(e){}FXL='d';if(!LITE){LITE=true;document.documentElement.classList.add('lite');shOff(1)}try{logsys('⚙ Leistungsmodus aktiviert (Ruckler erkannt)','#ffd23f')}catch(e){}}}catch(e){}}
@@ -2316,6 +2318,9 @@ if(!$('tpb')){const b=document.createElement('button');b.id='tpb';b.setAttribute
 $('nav').innerHTML=[['h','Held',"openM('inv')"],['id','Dungeon',"openM('dungeon')"],['hm','Schmiede',"openM('forge')"],null,['is','Händler',"openM('shop')"],['it','Karte',"openM('tele')"],['im','Mehr','moreWin()']].map(b=>b?`<button class='nv' onclick="${b[2]}">${ico(b[0],32)}<span>${b[1]}</span></button>`:`<canvas id='orb' width='152' height='152'></canvas>`).join('');
 /* ---------- Was ist neu (Update-Hinweise) ---------- */
 const NEWS=[
+ {v:55,d:'1. November',t:'Keine Leuchtschatten mehr auf dem Handy',l:[
+  'Behoben: Auf der neuen Effekt-Ebene wurden Leuchtschatten noch gezeichnet, obwohl sie auf dem Handy aus sein sollten – das ist in Safari sehr teuer (z. B. beim Knochenspeer)',
+  'Leuchtschatten sind jetzt auf dem Handy überall aus']},
  {v:54,d:'1. November',t:'Neue Grafik-Engine (WebGL)',l:[
   'Held, Nekromagier, Monster und Diener werden jetzt mit WebGL (PixiJS) gezeichnet – alle Bilder liegen einmal im Grafikchip, nichts wird mehr hin- und herkopiert',
   'Der Hintergrund liegt als festes Bild hinter dem Spielfeld und wird nicht mehr jedes Bild neu gezeichnet',
