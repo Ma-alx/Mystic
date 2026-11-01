@@ -1485,7 +1485,7 @@ function spark(x,y,n,c){for(let i=0;i<n;i++){const a=Math.random()*6.28,v=40+Mat
 function skT(i){const c=G.p.cd[i],e=$('cd'+i);if(!e)return;if(c>0){const k=CL[S.c].sk[i],v=c.toFixed(1);if(cdT[i]!==v){cdT[i]=v;e.textContent=v+'s';if(e.style.display!=='flex'){e.style.display='flex';e.parentNode.classList.add('oncd')}e.style.background='conic-gradient(rgba(0,0,0,.78) '+Math.round(c/k.cd*360)+'deg,rgba(0,0,0,.2) 0)'}}else if(cdT[i]!==0){cdT[i]=0;e.style.display='none';e.parentNode.classList.remove('oncd')}}
 const mcap=()=>4+Math.floor(S.lv/10)+(S.c==='n'&&TL('cls')>=5?1:0);
 function addMinion(kd,x,y,pw){evT('minion');return addMinion0(kd,x,y,pw)}
-function addMinion0(kd,x,y,pw){pw=pw*(1+(S.c==='n'?.08*TL('cls'):0));const p=G.p,z=kd==='zomb';G.mn=G.mn||[];if(G.mn.length>=mcap()+2)G.mn.shift();const hp=Math.round(p.mhp*(z?.7:.32)*pw),X=Math.max(12,Math.min(W-12,x)),Y=Math.max(60,Math.min(H-24,y));G.mn.push({ally:1,ic:kd,x:X,y:Y,hp,mhp:hp,at:Math.max(1,Math.round(p.at*(z?.38:.5)*pw)),sp:z?1.1:1.9,r:z?14:11,atk:0,fh:0,fl:1,frz:0,life:z?34:26,ox:(Math.random()-.5)*70,oy:20+Math.random()*30});dc(X,Y+4,24,3,'rune');G.fx.push({t:'c',x:X,y:Y,r:26,l:.45,c:'#7cf0c0'});for(let q=0;q<14;q++)G.fx.push({t:'p',x:X+(Math.random()-.5)*16,y:Y+8,vx:(Math.random()-.5)*30,vy:-40-Math.random()*70,l:.7,m:.7,c:q%2?'#7cf0c0':'#e9fff5',s:1.6+Math.random()*1.8,g:-40})}
+function addMinion0(kd,x,y,pw){if(ALT.includes('d'))return;pw=pw*(1+(S.c==='n'?.08*TL('cls'):0));const p=G.p,z=kd==='zomb';G.mn=G.mn||[];if(G.mn.length>=mcap()+2)G.mn.shift();const hp=Math.round(p.mhp*(z?.7:.32)*pw),X=Math.max(12,Math.min(W-12,x)),Y=Math.max(60,Math.min(H-24,y));G.mn.push({ally:1,ic:kd,x:X,y:Y,hp,mhp:hp,at:Math.max(1,Math.round(p.at*(z?.38:.5)*pw)),sp:z?1.1:1.9,r:z?14:11,atk:0,fh:0,fl:1,frz:0,life:z?34:26,ox:(Math.random()-.5)*70,oy:20+Math.random()*30});dc(X,Y+4,24,3,'rune');G.fx.push({t:'c',x:X,y:Y,r:26,l:.45,c:'#7cf0c0'});for(let q=0;q<14;q++)G.fx.push({t:'p',x:X+(Math.random()-.5)*16,y:Y+8,vx:(Math.random()-.5)*30,vy:-40-Math.random()*70,l:.7,m:.7,c:q%2?'#7cf0c0':'#e9fff5',s:1.6+Math.random()*1.8,g:-40})}
 function dc(x,y,r,l,t){(G.dc=G.dc||[]).push({x,y,r,l,m:l,t});if(G.dc.length>40)G.dc.shift()}
 
 /* ---------- Fertigkeiten-Effekte 2.0 ---------- */
@@ -2126,7 +2126,7 @@ function dbgTxt(){let ls='nein';try{localStorage.setItem('wa_t','1');localStorag
  L.push('Cloud: '+(CLD.ok?'verbunden':'nicht verfügbar')+(CLD.msg?' · '+CLD.msg:'')+(CLD.lastTs?' · letzter Stand '+new Date(CLD.lastTs).toLocaleTimeString():'')+(CLD.busy?' · sichert…':''));
  L.push('Cloud-Uploads: '+PRB.cpN+(PRB.cpN?' · letzter dauerte '+PRB.cpMs+' ms':''));L.push('Spielstand: '+Math.round(PRB.svSz/1024)+' KB · Speichern '+PRB.svMs.toFixed(1)+' ms (max '+PRB.svMx.toFixed(1)+')');
  L.push('Bild-Wächter eingesprungen: '+_wdN+'×');L.push('Langsamster Zeichenbefehl: '+(SLW.n||'–'));
- L.push('Sicher-Modus: '+(SAFE?'AN':'aus'));L.push('Testmodus: '+(ALT?({n:'Nekro alt',g:'keine Geister',m:'Monster alt',k:'Karten alt',ngmk:'alles alt'}[ALT]||ALT):'aus'));L.push('Ruckler bei offenem Fenster (nicht gelistet): '+(typeof _stWin==='number'?_stWin:0)); L.push('Laufzeit: '+Math.round((Date.now()-DBG.t0)/60000)+' min');
+ L.push('Sicher-Modus: '+(SAFE?'AN':'aus'));L.push('Testmodus: '+(ALT?({n:'Nekro alt',g:'keine Geister',m:'Monster alt',k:'Karten alt',d:'keine Diener',ngmk:'alles alt'}[ALT]||ALT):'aus'));L.push('Ruckler bei offenem Fenster (nicht gelistet): '+(typeof _stWin==='number'?_stWin:0)); L.push('Laufzeit: '+Math.round((Date.now()-DBG.t0)/60000)+' min');
  L.push((()=>{try{const m=cvmNow();return 'Zeichenflächen: '+m.n+' ('+m.mb+' MB) · angelegt insgesamt '+CVM.made+(CVM.log.length?'\nSpeicher-Verlauf (alle 30 s):\n  '+CVM.log.join('\n  '):'')+'\n'}catch(e){return''}})()+(typeof anTxt==='function'?anTxt():'')+'Ruckler >250 ms: '+_stTot+(STL.length?'\n  '+STL.join('\n  '):''));
  L.push('Fehler: '+(DBG.err.length?DBG.err.join(' | '):'keine'));
  if(DBG.bench)L.push(DBG.bench);
@@ -2318,6 +2318,8 @@ if(!$('tpb')){const b=document.createElement('button');b.id='tpb';b.setAttribute
 $('nav').innerHTML=[['h','Held',"openM('inv')"],['id','Dungeon',"openM('dungeon')"],['hm','Schmiede',"openM('forge')"],null,['is','Händler',"openM('shop')"],['it','Karte',"openM('tele')"],['im','Mehr','moreWin()']].map(b=>b?`<button class='nv' onclick="${b[2]}">${ico(b[0],32)}<span>${b[1]}</span></button>`:`<canvas id='orb' width='152' height='152'></canvas>`).join('');
 /* ---------- Was ist neu (Update-Hinweise) ---------- */
 const NEWS=[
+ {v:56,d:'1. November',t:'Testschalter ohne Diener',l:[
+  'Zur Fehlersuche: Mit ma-alx.github.io/Mystic/?alt=d werden keine Diener beschworen – so lässt sich prüfen, ob die Hänger im Dungeon von den Dienern kommen']},
  {v:55,d:'1. November',t:'Keine Leuchtschatten mehr auf dem Handy',l:[
   'Behoben: Auf der neuen Effekt-Ebene wurden Leuchtschatten noch gezeichnet, obwohl sie auf dem Handy aus sein sollten – das ist in Safari sehr teuer (z. B. beim Knochenspeer)',
   'Leuchtschatten sind jetzt auf dem Handy überall aus']},
