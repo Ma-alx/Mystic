@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="de"><head><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" href="apple-touch-icon.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Mystic"><meta name="apple-mobile-web-app-status-bar-style" content="black"><meta charset="utf-8">
+<html lang="de"><head><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" href="apple-touch-icon.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Mystic"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Mystic Adventures</title>
 <style>
@@ -366,6 +366,9 @@ img,svg,canvas{-webkit-user-drag:none}
 #bossbar .bn small{color:#cfc6b0;flex:none}
 #bossbar .bt{position:relative;height:9px;margin-top:3px;background:#1a0f0c;border:1px solid #000;border-radius:5px;overflow:hidden}
 #bossbar .bt i{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(#ff7a3a,#a5200e);border-radius:5px;transition:width .2s}
+@media (min-width:700px){#game{max-width:calc(100dvh*1.8)!important}}
+#modal{padding-top:max(10px,env(safe-area-inset-top,0px))!important;padding-bottom:max(10px,env(safe-area-inset-bottom,0px))!important}#modal2{padding-top:max(14px,env(safe-area-inset-top,0px))!important;padding-bottom:max(14px,env(safe-area-inset-bottom,0px))!important}
+html,body{background:#0b0a09}
 </style></head><body>
 <div id="menu" class="w"></div><div id="mcirc"></div><div id="mist"></div>
 <div id="game">
@@ -2318,6 +2321,7 @@ if(!$('tpb')){const b=document.createElement('button');b.id='tpb';b.setAttribute
 $('nav').innerHTML=[['h','Held',"openM('inv')"],['id','Dungeon',"openM('dungeon')"],['hm','Schmiede',"openM('forge')"],null,['is','Händler',"openM('shop')"],['it','Karte',"openM('tele')"],['im','Mehr','moreWin()']].map(b=>b?`<button class='nv' onclick="${b[2]}">${ico(b[0],32)}<span>${b[1]}</span></button>`:`<canvas id='orb' width='152' height='152'></canvas>`).join('');
 /* ---------- Was ist neu (Update-Hinweise) ---------- */
 const NEWS=[
+ {v:59,d:'16. November',t:'Vollbild auf Handy und PC',l:['Handy: das Spiel reicht jetzt bis ganz nach oben und unten, Fenster rutschen nicht mehr unter Uhr und Akku','PC: das Spiel füllt das ganze Browserfenster aus statt nur eine schmale Spalte']},
  {v:58,d:'16. November',t:'Bedienung am PC',l:['Klassenwahl: mit der Maus ziehen, das Mausrad drehen oder die Pfeiltasten links/rechts benutzen','Wischen auf dem Handy funktioniert wie bisher']},
  {v:57,d:'4. November',t:'Optimierungen nach großem Test',l:[
   'Alle Klassen, Karte, Dungeon und alle Menüs durchgetestet – keine Fehler, kein Speicherleck',
