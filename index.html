@@ -369,6 +369,7 @@ img,svg,canvas{-webkit-user-drag:none}
 @media (min-width:700px){#game{max-width:calc(100dvh*1.8)!important}}
 #modal{padding-top:max(10px,env(safe-area-inset-top,0px))!important;padding-bottom:max(10px,env(safe-area-inset-bottom,0px))!important}#modal2{padding-top:max(14px,env(safe-area-inset-top,0px))!important;padding-bottom:max(14px,env(safe-area-inset-bottom,0px))!important}
 html,body{background:#0b0a09}
+@media (min-width:700px){.w{max-width:none!important;padding:10px 4vw!important}.mcar{padding:4px calc(50% - 170px)!important}.mcard{flex:0 0 340px!important}}
 </style></head><body>
 <div id="menu" class="w"></div><div id="mcirc"></div><div id="mist"></div>
 <div id="game">
@@ -2321,6 +2322,7 @@ if(!$('tpb')){const b=document.createElement('button');b.id='tpb';b.setAttribute
 $('nav').innerHTML=[['h','Held',"openM('inv')"],['id','Dungeon',"openM('dungeon')"],['hm','Schmiede',"openM('forge')"],null,['is','Händler',"openM('shop')"],['it','Karte',"openM('tele')"],['im','Mehr','moreWin()']].map(b=>b?`<button class='nv' onclick="${b[2]}">${ico(b[0],32)}<span>${b[1]}</span></button>`:`<canvas id='orb' width='152' height='152'></canvas>`).join('');
 /* ---------- Was ist neu (Update-Hinweise) ---------- */
 const NEWS=[
+ {v:60,d:'16. November',t:'Startseite am PC',l:['Die Startseite mit der Klassenwahl füllt jetzt auch am PC das ganze Fenster','Die Klassen-Karten bleiben ordentlich groß und lassen sich mit Maus, Mausrad oder Pfeiltasten wechseln']},
  {v:59,d:'16. November',t:'Vollbild auf Handy und PC',l:['Handy: das Spiel reicht jetzt bis ganz nach oben und unten, Fenster rutschen nicht mehr unter Uhr und Akku','PC: das Spiel füllt das ganze Browserfenster aus statt nur eine schmale Spalte']},
  {v:58,d:'16. November',t:'Bedienung am PC',l:['Klassenwahl: mit der Maus ziehen, das Mausrad drehen oder die Pfeiltasten links/rechts benutzen','Wischen auf dem Handy funktioniert wie bisher']},
  {v:57,d:'4. November',t:'Optimierungen nach großem Test',l:[
