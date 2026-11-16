@@ -2318,6 +2318,7 @@ if(!$('tpb')){const b=document.createElement('button');b.id='tpb';b.setAttribute
 $('nav').innerHTML=[['h','Held',"openM('inv')"],['id','Dungeon',"openM('dungeon')"],['hm','Schmiede',"openM('forge')"],null,['is','Händler',"openM('shop')"],['it','Karte',"openM('tele')"],['im','Mehr','moreWin()']].map(b=>b?`<button class='nv' onclick="${b[2]}">${ico(b[0],32)}<span>${b[1]}</span></button>`:`<canvas id='orb' width='152' height='152'></canvas>`).join('');
 /* ---------- Was ist neu (Update-Hinweise) ---------- */
 const NEWS=[
+ {v:58,d:'16. November',t:'Bedienung am PC',l:['Klassenwahl: mit der Maus ziehen, das Mausrad drehen oder die Pfeiltasten links/rechts benutzen','Wischen auf dem Handy funktioniert wie bisher']},
  {v:57,d:'4. November',t:'Optimierungen nach großem Test',l:[
   'Alle Klassen, Karte, Dungeon und alle Menüs durchgetestet – keine Fehler, kein Speicherleck',
   'Behoben: Bei niedriger Bildrate hat das Spiel die Seite mitten im Kampf neu geladen – jetzt gibt es nur noch einen Tipp',
@@ -3020,6 +3021,19 @@ async function saveNow(){try{save()}catch(e){}
  $('mb2').innerHTML=h;$('modal2').style.display='flex';
  if(GH.tok){ghPush(true).then(ok=>{const e=$('svg');if(e){e.textContent=ok?'✓ gesichert':'✗ '+(GH.msg||'fehlgeschlagen');e.style.color=ok?'#3ddc5a':'#ff6b6b'}})}
  if(CLD.ok){let ok=false;try{ok=await cloudPush(null,true)}catch(e){}const e=$('svc');if(e){e.textContent=ok?'✓ gesichert':'✗ fehlgeschlagen'+(CLD.msg?' ('+CLD.msg+')':'');e.style.color=ok?'#3ddc5a':'#ff6b6b'}}}
+
+/* ---------- PC-Bedienung: Maus ziehen, Mausrad, Pfeiltasten in der Klassenwahl ---------- */
+(()=>{let d=null,skip=0;const car=t=>t&&t.closest&&t.closest('.mcar');
+const snap=c=>{const cs=c.children,m=c.scrollLeft+c.clientWidth/2;let bi=0,bd=1e9;for(let i=0;i<cs.length;i++){const k=Math.abs(cs[i].offsetLeft+cs[i].offsetWidth/2-m);if(k<bd){bd=k;bi=i}}c.scrollTo({left:cs[bi].offsetLeft+cs[bi].offsetWidth/2-c.clientWidth/2,behavior:'smooth'})};
+const step=(c,n)=>{const cs=c.children,m=c.scrollLeft+c.clientWidth/2;let bi=0,bd=1e9;for(let i=0;i<cs.length;i++){const k=Math.abs(cs[i].offsetLeft+cs[i].offsetWidth/2-m);if(k<bd){bd=k;bi=i}}bi=Math.max(0,Math.min(cs.length-1,bi+n));c.scrollTo({left:cs[bi].offsetLeft+cs[bi].offsetWidth/2-c.clientWidth/2,behavior:'smooth'})};
+document.addEventListener('pointerdown',e=>{if(e.pointerType!=='mouse'||e.button!==0)return;const c=car(e.target);if(c)d={c,x:e.clientX,s:c.scrollLeft,m:0}},true);
+document.addEventListener('pointermove',e=>{if(!d)return;const dx=e.clientX-d.x;if(Math.abs(dx)>6){d.m=1;d.c.style.scrollSnapType='none';d.c.style.cursor='grabbing';d.c.scrollLeft=d.s-dx}},true);
+const end=()=>{if(!d)return;const c=d.c;if(d.m){skip=1;setTimeout(()=>skip=0,60);snap(c)}c.style.scrollSnapType='';c.style.cursor='';d=null};
+document.addEventListener('pointerup',end,true);document.addEventListener('pointercancel',end,true);
+document.addEventListener('click',e=>{if(skip){e.stopPropagation();e.preventDefault()}},true);
+document.addEventListener('wheel',e=>{const c=car(e.target);if(!c)return;if(Math.abs(e.deltaY)>=Math.abs(e.deltaX)&&e.deltaY){e.preventDefault();if(!c._wt||Date.now()-c._wt>260){c._wt=Date.now();step(c,e.deltaY>0?1:-1)}}},{passive:false});
+document.addEventListener('keydown',e=>{if(e.key!=='ArrowLeft'&&e.key!=='ArrowRight')return;const c=document.getElementById('mcar');if(c&&c.offsetParent){e.preventDefault();step(c,e.key==='ArrowRight'?1:-1)}});
+})();
 menu();retr();newsAuto();
 try{const rk=sessionStorage.getItem('wa_resume');if(rk){sessionStorage.removeItem('wa_resume');setTimeout(()=>{try{go(true,rk)}catch(e){}},300)}}catch(e){}
 
