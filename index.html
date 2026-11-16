@@ -366,7 +366,7 @@ img,svg,canvas{-webkit-user-drag:none}
 #bossbar .bn small{color:#cfc6b0;flex:none}
 #bossbar .bt{position:relative;height:9px;margin-top:3px;background:#1a0f0c;border:1px solid #000;border-radius:5px;overflow:hidden}
 #bossbar .bt i{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(#ff7a3a,#a5200e);border-radius:5px;transition:width .2s}
-@media (min-width:700px){#game{max-width:calc(100dvh*1.8)!important}}
+@media (min-width:700px){#game{max-width:max(440px,calc(100dvh*.95))!important}}
 #modal{padding-top:max(10px,env(safe-area-inset-top,0px))!important;padding-bottom:max(10px,env(safe-area-inset-bottom,0px))!important}#modal2{padding-top:max(14px,env(safe-area-inset-top,0px))!important;padding-bottom:max(14px,env(safe-area-inset-bottom,0px))!important}
 html,body{background:#0b0a09}
 @media (min-width:700px){.w{max-width:none!important;padding:10px 4vw!important}.mcar{padding:4px calc(50% - 170px)!important}.mcard{flex:0 0 340px!important}}
@@ -2322,6 +2322,7 @@ if(!$('tpb')){const b=document.createElement('button');b.id='tpb';b.setAttribute
 $('nav').innerHTML=[['h','Held',"openM('inv')"],['id','Dungeon',"openM('dungeon')"],['hm','Schmiede',"openM('forge')"],null,['is','Händler',"openM('shop')"],['it','Karte',"openM('tele')"],['im','Mehr','moreWin()']].map(b=>b?`<button class='nv' onclick="${b[2]}">${ico(b[0],32)}<span>${b[1]}</span></button>`:`<canvas id='orb' width='152' height='152'></canvas>`).join('');
 /* ---------- Was ist neu (Update-Hinweise) ---------- */
 const NEWS=[
+ {v:61,d:'16. November',t:'Spielfeld am PC schärfer',l:['Das Spielfeld wird am PC nicht mehr über das ganze breite Fenster gezogen, dadurch sind Figuren und Schrift schärfer und nicht mehr riesig','Es nutzt die volle Höhe des Fensters und steht mittig']},
  {v:60,d:'16. November',t:'Startseite am PC',l:['Die Startseite mit der Klassenwahl füllt jetzt auch am PC das ganze Fenster','Die Klassen-Karten bleiben ordentlich groß und lassen sich mit Maus, Mausrad oder Pfeiltasten wechseln']},
  {v:59,d:'16. November',t:'Vollbild auf Handy und PC',l:['Handy: das Spiel reicht jetzt bis ganz nach oben und unten, Fenster rutschen nicht mehr unter Uhr und Akku','PC: das Spiel füllt das ganze Browserfenster aus statt nur eine schmale Spalte']},
  {v:58,d:'16. November',t:'Bedienung am PC',l:['Klassenwahl: mit der Maus ziehen, das Mausrad drehen oder die Pfeiltasten links/rechts benutzen','Wischen auf dem Handy funktioniert wie bisher']},
